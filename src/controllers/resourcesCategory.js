@@ -14,7 +14,7 @@ const createResourcesCategory = async (req, res) => {
 
 const getResourcesCategories = async (req, res) => {
   const { id: author } = req.user
-  const { name, sort, skip, limit } = req.query
+  const { name='', sort = '', skip, limit } = req.body
 
   const match = getMatchOptions({ author, name: getRegex(name) })
   const sortOptions = getSortOptions(sort)
