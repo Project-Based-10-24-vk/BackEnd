@@ -5,6 +5,9 @@ const getMatchOptions = (filters) => {
     if (value) {
       match[key] = value
     }
+    if (key === 'category' && value === null) {
+      match[key] = value
+    }
   }
 
   return match
