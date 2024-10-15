@@ -12,7 +12,7 @@ describe('Auth controller', () => {
   let app, server, signupResponse
 
   beforeAll(async () => {
-    ; ({ app, server } = await serverInit())
+    ;({ app, server } = await serverInit())
   })
 
   beforeEach(async () => {
@@ -112,6 +112,14 @@ describe('Auth controller', () => {
       const response = await app.patch('/auth/reset-password/invalid-token').send({ password: 'valid_pass1' })
 
       expectError(400, errors.BAD_RESET_TOKEN, response)
+    })
+  })
+
+  describe('ConfirmEmail endpoint', () => {
+    it('should throw BAD_CONFIRMATION_TOKEN error for invalid token', async () => {
+      const response = await app.get('/auth/confirm-email/invalid-token').send()
+
+      expectError(400, errors.BAD_CONFIRMATION_TOKEN, response)
     })
   })
 })
