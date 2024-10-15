@@ -112,7 +112,7 @@ const authService = {
     })
   },
 
-  confirmEmail: async (confirmToken, language) => {
+  confirmEmail: async (confirmToken) => {
     const tokenData = tokenService.validateConfirmToken(confirmToken)
     const tokenFromDB = tokenService.findToken(confirmToken, CONFIRM_TOKEN)
 
@@ -120,13 +120,11 @@ const authService = {
       throw createError(400, BAD_CONFIRMATION_TOKEN)
     }
 
-    const { id: userId, firstName, email } = tokenData
+    const { id: userId } = tokenData
 
     await privateUpdateUser(userId, { isEmailConfirmed: true })
 
     await tokenService.removeConfirmToken(confirmToken)
-
-    await emailService.sendEmail(email, emailSubject.SUCCESSFUL_EMAIL_CONFIRMATION, language, { firstName })
   }
 }
 

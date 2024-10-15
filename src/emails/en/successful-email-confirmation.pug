@@ -1,8 +1,0 @@
-extends index
-block title
-    h1 Hi #{firstName}!
-block description
-    p We were able to confirm your email successfully. Now you can login into your account.
-    a(href=`${process.env.CLIENT_URL}/?confirmToken=${confirmToken}`) Click here to move to login page. 
-    p If you did not ask for confirmation, you can ignore this email.
-   

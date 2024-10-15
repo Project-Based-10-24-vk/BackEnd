@@ -50,16 +50,6 @@ const templateList = {
       subject: 'Запрошення адміна',
       template: 'ua/invite-admin'
     }
-  },
-  [emailSubject.SUCCESSFUL_EMAIL_CONFIRMATION]: {
-    en: {
-      subject: 'Your email was confirmed',
-      template: 'en/successful-email-confirmation'
-    },
-    ua: {
-      subject: 'Ваша електронна адреса успішно підтверджено',
-      template: 'ua/successful-email-confirmation'
-    }
   }
 }
 

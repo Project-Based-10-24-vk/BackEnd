@@ -88,9 +88,8 @@ const updatePassword = async (req, res) => {
 
 const confirmEmail = async (req, res) => {
   const confirmToken = req.params.token
-  const lang = req.lang
 
-  await authService.confirmEmail(confirmToken, lang)
+  await authService.confirmEmail(confirmToken)
 
   res.status(204).end()
 }
