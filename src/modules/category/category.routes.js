@@ -1,11 +1,9 @@
 const router = require('express').Router()
 const validationMiddleware = require('~/middlewares/validation')
-const isEntityValid = require('~/middlewares/entityValidation')
 const idValidation = require('~/middlewares/idValidation')
 const asyncWrapper = require('~/middlewares/asyncWrapper')
 const { authMiddleware } = require('~/middlewares/auth')
 
-const Category = require('./category.model')
 const categoryController = require('./category.controller')
 const { categoryValidation } = require('./category.schemas')
 
