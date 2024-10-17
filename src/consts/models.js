@@ -12,6 +12,7 @@ const refs = {
   FINISHED_QUIZ: 'FinishedQuiz',
   ATTACHMENT: 'Attachment',
   QUESTION: 'Question',
+  CATEGORY: 'Category',
   RESOURCES_CATEGORY: 'ResourcesCategory'
 }
 
