@@ -1,13 +1,40 @@
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const path = require('path')
 
 const {
-  config: { CLIENT_URL }
+  config: { CLIENT_URL, SERVER_URL }
 } = require('~/configs/config')
 const router = require('~/routes')
 const { createNotFoundError } = require('~/utils/errorsHelper')
 const errorMiddleware = require('~/middlewares/error')
+
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUI = require('swagger-ui-express')
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Space2Study',
+      version: '1.0.0',
+      description: 'Space2Study API documentation'
+    },
+    servers: [
+      {
+        url: SERVER_URL
+      }
+    ],
+    components: {
+      securitySchemes: {
+        //cookieAuth or any other security schema
+      }
+    }
+  },
+  apis: [path.join(process.cwd(), '/docs/*.yaml')]
+}
+const swaggerSettings = swaggerJsDoc(swaggerOptions)
 
 const initialization = (app) => {
   app.use(express.json({ limit: '10mb' }))
@@ -23,6 +50,7 @@ const initialization = (app) => {
   )
 
   app.use('/', router)
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSettings, { explorer: true }))
 
   app.use((_req, _res, next) => {
     next(createNotFoundError())
