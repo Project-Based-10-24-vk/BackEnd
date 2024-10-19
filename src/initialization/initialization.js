@@ -27,8 +27,23 @@ const swaggerOptions = {
       }
     ],
     components: {
+      Error: {
+        type: 'object',
+        properties: {
+          message: {
+            type: 'string'
+          },
+          code: {
+            type: 'string'
+          }
+        }
+      },
       securitySchemes: {
-        //cookieAuth or any other security schema
+        cookieAuth: {
+          type: 'apiKey',
+          in: 'cookie',
+          name: 'accessToken'
+        }
       }
     }
   },

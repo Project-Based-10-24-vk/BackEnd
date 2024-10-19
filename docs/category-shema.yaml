@@ -1,0 +1,60 @@
+definitions:
+  findAllByQuery:
+    type: object
+    properties:
+      name:
+        type: string
+      appearance:
+        type: object
+        properties:
+          icon:
+            type: string
+          color:
+            type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+  findOneByIdResponse:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      appearance:
+        type: object
+        properties:
+          icon:
+            type: string
+          color:
+            type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+  create:
+    type: object
+    properties:
+      name:
+        type: string
+      icon:
+        type: string
+      color:
+        type: string
+  createResponse:
+    type: object
+    properties:
+      name:
+        type: string
+      appearance:
+        type: object
+        properties:
+          icon:
+            type: string
+          color:
+            type: string
