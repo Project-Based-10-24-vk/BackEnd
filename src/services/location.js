@@ -16,7 +16,7 @@ const locationService = {
       return { id, name, iso2 }
     })
   },
-
+  // Begin of changing for this PR
   getCities: async (countryCode) => {
     const customHeaders = {
       [apiHeadersKey.COUNTRIES]: countriesAPI.apiKey
@@ -25,6 +25,7 @@ const locationService = {
 
     return await axiosService.get(url, customHeaders)
   }
+  // End of changing for this PR
 }
 
 module.exports = locationService

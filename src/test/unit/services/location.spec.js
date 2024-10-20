@@ -35,6 +35,8 @@ describe('locationService.getCountries', () => {
   })
 })
 
+// Begin of changing for this PR
+
 describe('locationService.getCities', () => {
   const countryCode = 'CA'
 
@@ -69,3 +71,5 @@ describe('locationService.getCities', () => {
     await expect(locationService.getCities(countryCode)).rejects.toThrow('API Error')
   })
 })
+
+// End of changing for this PR
