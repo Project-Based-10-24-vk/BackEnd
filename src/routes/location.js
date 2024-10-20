@@ -11,5 +11,6 @@ router.use(authMiddleware)
 router.param('id', idValidation)
 
 router.get('/countries', asyncWrapper(locationController.getCountries))
+router.get('/cities/:countryCode', asyncWrapper(locationController.getCities))
 
 module.exports = router
