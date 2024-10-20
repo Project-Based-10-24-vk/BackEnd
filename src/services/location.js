@@ -9,7 +9,12 @@ const locationService = {
       [apiHeadersKey.COUNTRIES]: countriesAPI.apiKey
     }
 
-    return await axiosService.get(url, customHeaders)
+    const response = await axiosService.get(url, customHeaders)
+
+    return response.map((country) => {
+      const { id, name, iso2 } = country
+      return { id, name, iso2 }
+    })
   }
 }
 
