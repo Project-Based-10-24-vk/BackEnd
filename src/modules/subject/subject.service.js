@@ -1,4 +1,4 @@
-const Subject = require('~/models/subject')
+const Subject = require('./subject.model')
 
 const subjectService = {
   getSubjects: async () => {
