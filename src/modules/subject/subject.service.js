@@ -7,7 +7,7 @@ const subjectService = {
   },
 
   getSubjectById: async (id) => {
-    const subject = await Subject.findById(id)
+    const subject = await Subject.findById(id).lean().exec()
     return subject
   },
 

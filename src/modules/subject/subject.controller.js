@@ -1,6 +1,6 @@
 const subjectService = require('./subject.service')
 
-const subjectFind = async (req, res) => {
+const subjectsFind = async (req, res) => {
   const subjects = await subjectService.getSubjects()
   res.status(200).json(subjects)
 }
@@ -44,7 +44,7 @@ const subjectDelete = async (req, res) => {
   res.status(204).send()
 }
 
-const subjectFindByCategoryId = async (req, res) => {
+const subjectsFindByCategoryId = async (req, res) => {
   const { id } = req.params
   const subjects = await subjectService.getSubjectsByCategoryId(id)
   
@@ -52,10 +52,10 @@ const subjectFindByCategoryId = async (req, res) => {
 }
 
 module.exports = {
-  subjectFind,
+  subjectsFind,
   subjectFindById,
   subjectCreate,
   subjectUpdate,
   subjectDelete,
-  subjectFindByCategoryId,
+  subjectsFindByCategoryId,
 }
