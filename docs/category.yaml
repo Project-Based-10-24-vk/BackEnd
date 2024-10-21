@@ -50,6 +50,7 @@ paths:
     get:
       security:
         - cookieAuth: []
+        - basicAuth: []
       tags:
         - Category
       summary: Get all categories or search by name

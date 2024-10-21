@@ -39,13 +39,26 @@ const swaggerOptions = {
         }
       },
       securitySchemes: {
+        basicAuth: {
+          type: 'http',
+          scheme: 'basic'
+        },
         cookieAuth: {
           type: 'apiKey',
           in: 'cookie',
-          name: 'accessToken'
+          name: 'accessToken',
+          description: 'Access token'
         }
       }
-    }
+    },
+    security: [
+      {
+        cookieAuth: []
+      },
+      {
+        basicAuth: []
+      }
+    ]
   },
   apis: [path.join(process.cwd(), '/docs/*.yaml')]
 }
