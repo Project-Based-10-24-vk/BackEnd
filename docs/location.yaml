@@ -1,5 +1,5 @@
 paths:
-  /countries:
+  /location/countries:
     get:
       summary: Get list of countries
       description: Returns a list of countries with id, name, and iso2 code.
@@ -39,7 +39,7 @@ paths:
         '500':
           description: Internal server error
 
-  /cities/{countryCode}:
+  /location/cities/{countryCode}:
     get:
       summary: Get list of cities for a country
       description: Returns a list of cities for the specified country code.
