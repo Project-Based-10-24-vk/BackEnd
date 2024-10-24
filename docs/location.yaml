@@ -39,7 +39,7 @@ paths:
         '500':
           description: Internal server error
 
-  /location/{countryCode}/cities:
+  /location/countries/{countryCode}/cities:
     get:
       summary: Get list of cities for a country
       description: Returns a list of cities for the specified country code.
