@@ -11,5 +11,8 @@ router.use(authMiddleware)
 router.param('id', idValidation)
 
 router.get('/countries', asyncWrapper(locationController.getCountries))
+// Begin of changing for this PR
+router.get('/countries/:countryCode/cities', asyncWrapper(locationController.getCities))
+// End of changing for this PR
 
 module.exports = router
