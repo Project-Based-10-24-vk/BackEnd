@@ -1,4 +1,5 @@
 const Offer = require('~/models/offer')
+const { createForbiddenError } = require('~/utils/errorsHelper')
 
 const filterAllowedFields = require('~/utils/filterAllowedFields')
 const { allowedOfferFieldsForUpdate } = require('~/validation/services/offer')
@@ -54,6 +55,11 @@ const offerService = {
 
     const offer = await Offer.findById(id)
 
+    const author = offer.author.toString()
+    if (currentUserId !== author) {
+      throw createForbiddenError()
+    }
+
     for (let field in filteredUpdateData) {
       offer[field] = filteredUpdateData[field]
     }
@@ -62,7 +68,14 @@ const offerService = {
     await offer.save()
   },
 
-  deleteOffer: async (id) => {
+  deleteOffer: async (id, currentUserId) => {
+    const offer = await Offer.findById(id)
+    const author = offer.author.toString()
+
+    if (currentUserId !== author) {
+      throw createForbiddenError()
+    }
+
     await Offer.findByIdAndRemove(id).exec()
   }
 }
