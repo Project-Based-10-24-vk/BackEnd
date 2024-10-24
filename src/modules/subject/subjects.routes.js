@@ -13,7 +13,7 @@ router.param('id', idValidation)
 
 router.get('/', asyncWrapper(subjectController.subjectsFind))
 router.get('/:id', asyncWrapper(subjectController.subjectFindById))
-router.get('/categories/:id', asyncWrapper(subjectController.subjectsFindByCategoryId))
+router.get('/categories/:id/subjects', asyncWrapper(subjectController.subjectsFindByCategoryId))
 
 router.use(restrictTo(ADMIN))
 router.post('/', asyncWrapper(subjectController.subjectCreate))
