@@ -10,7 +10,7 @@ const categorySchema = new Schema(
       type: String,
       required: [true, FIELD_CANNOT_BE_EMPTY('name')],
       unique: true,
-      lowercase: true
+      trim: true
     },
     appearance: {
       icon: {

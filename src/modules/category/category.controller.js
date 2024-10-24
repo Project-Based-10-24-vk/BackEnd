@@ -11,6 +11,11 @@ const findAll = async (req, res) => {
   res.status(200).json(response)
 }
 
+const findAllNames = async (req, res) => {
+  const response = await categoryService.findAllNames()
+  res.status(200).json(response)
+}
+
 const findById = async (req, res) => {
   const { id } = req.params
   const response = await categoryService.findById(id)
@@ -25,6 +30,7 @@ const create = async (req, res) => {
 
 module.exports = {
   findAll,
+  findAllNames,
   findById,
   create
 }
