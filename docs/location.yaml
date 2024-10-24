@@ -1,0 +1,40 @@
+paths:
+  /countries:
+    get:
+      summary: Get list of countries
+      description: Returns a list of countries with id, name, and iso2 code.
+      tags:
+        - Location
+      parameters:
+        - in: header
+          name: X-CSCAPI-KEY
+          required: true
+          schema:
+            type: string
+          description: API key for authentication
+      responses:
+        '200':
+          description: A list of countries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The unique identifier of the country
+                      example: 1
+                    name:
+                      type: string
+                      description: The name of the country
+                      example: "Country A"
+                    iso2:
+                      type: string
+                      description: ISO2 code of the country
+                      example: "CA"
+        '401':
+          description: Unauthorized, missing or invalid API key
+        '500':
+          description: Internal server error
