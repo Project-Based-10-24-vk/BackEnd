@@ -9,16 +9,19 @@ const lessonService = {
     })
   },
 
-  findAll: async () => {
-    return await Lesson.find().lean().exec()
+  findMany: async () => {
+    const count = await Lesson.countDocuments().exec()
+    const items = await Lesson.find().lean().exec()
+
+    return { count, items }
   },
 
-  findById: async (id) => {
+  findOneById: async (id) => {
     return await Lesson.findById(id).lean().exec()
   },
 
   update: async (id, author, data) => {
-    const lesson = await Lesson.findById(id).exec()
+    const lesson = await lessonService.findById(id)
 
     if (!lesson) {
       throw createNotFoundError()
@@ -33,7 +36,8 @@ const lessonService = {
   },
 
   remove: async (id, author) => {
-    const lesson = await Lesson.findById(id).exec()
+    const lesson = await lessonService.findById(id)
+
     if (!lesson) {
       throw createNotFoundError()
     }

@@ -8,15 +8,15 @@ const create = async (req, res) => {
   res.status(201).json(response)
 }
 
-const findAll = async (req, res) => {
-  const response = await lessonService.findAll()
+const findMany = async (req, res) => {
+  const response = await lessonService.findMany()
   res.status(200).json(response)
 }
 
-const findById = async (req, res) => {
+const findOneById = async (req, res) => {
   const { id } = req.params
 
-  const response = await lessonService.findById(id)
+  const response = await lessonService.findOneById(id)
   res.status(200).json(response)
 }
 
@@ -39,8 +39,8 @@ const remove = async (req, res) => {
 
 module.exports = {
   create,
-  findAll,
-  findById,
+  findMany,
+  findOneById,
   update,
   remove
 }

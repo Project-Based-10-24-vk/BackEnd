@@ -21,12 +21,12 @@ router.param('id', idValidation)
 // @desc    Get all lessons
 // @route 	GET /lessons
 // @access  Public
-router.get('/', asyncWrapper(lessonController.findAll))
+router.get('/', asyncWrapper(lessonController.findMany))
 
 // @desc    Get lesson by id
 // @route 	GET /lessons/:id
 // @access  Public
-router.get('/:id', isEntityValid({ params }), asyncWrapper(lessonController.findById))
+router.get('/:id', isEntityValid({ params }), asyncWrapper(lessonController.findOneById))
 
 router.use(authMiddleware)
 router.use(restrictTo(TUTOR, ADMIN))
