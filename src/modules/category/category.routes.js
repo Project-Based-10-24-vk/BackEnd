@@ -16,17 +16,17 @@ router.param('id', idValidation)
 // @desc    Get all categories
 // @route 	GET /categories
 // @access  Private (Authenticated users)
-router.get('/', asyncWrapper(categoryController.findAll))
+router.get('/', asyncWrapper(categoryController.findMany))
 
 // @desc    Get all categories names
 // @route 	GET /categories/names
 // @access  Private (Authenticated users)
-router.get('/names', asyncWrapper(categoryController.findAllNames))
+router.get('/names', asyncWrapper(categoryController.findManyNames))
 
 // @desc    Get category by id
 // @route 	GET /categories/:id
 // @access  Private (Authenticated users)
-router.get('/:id', asyncWrapper(categoryController.findById))
+router.get('/:id', asyncWrapper(categoryController.findOneById))
 
 router.use(restrictTo(ADMIN))
 // @desc    Create category

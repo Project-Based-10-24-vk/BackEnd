@@ -7,19 +7,19 @@ const categoryService = {
 
     return await Category.create(newCategory)
   },
-  findAll: async (match) => {
+  findMany: async (match) => {
     const items = await Category.find(match).lean().exec()
     const count = await Category.countDocuments(match)
 
     return { count, items }
   },
-  findAllNames: async (match) => {
+  findManyNames: async (match) => {
     const items = await Category.find().select('name').lean().exec()
     const count = await Category.countDocuments(match)
 
     return { count, items }
   },
-  findById: async (id) => {
+  findOneById: async (id) => {
     return await Category.findById(id).lean().exec()
   }
 }

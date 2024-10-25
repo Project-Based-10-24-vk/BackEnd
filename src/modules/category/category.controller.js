@@ -3,22 +3,22 @@ const getRegex = require('~/utils/getRegex')
 
 const categoryService = require('./category.service')
 
-const findAll = async (req, res) => {
+const findMany = async (req, res) => {
   const { name = '' } = req.query
   const match = getMatchOptions({ name: getRegex(name) })
 
-  const response = await categoryService.findAll(match)
+  const response = await categoryService.findMany(match)
   res.status(200).json(response)
 }
 
-const findAllNames = async (req, res) => {
-  const response = await categoryService.findAllNames()
+const findManyNames = async (req, res) => {
+  const response = await categoryService.findManyNames()
   res.status(200).json(response)
 }
 
-const findById = async (req, res) => {
+const findOneById = async (req, res) => {
   const { id } = req.params
-  const response = await categoryService.findById(id)
+  const response = await categoryService.findOneById(id)
   res.status(200).json(response)
 }
 
@@ -29,8 +29,8 @@ const create = async (req, res) => {
 }
 
 module.exports = {
-  findAll,
-  findAllNames,
-  findById,
+  findMany,
+  findManyNames,
+  findOneById,
   create
 }
