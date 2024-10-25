@@ -1,5 +1,5 @@
 const CronJob = require('cron').CronJob
-const userService = require('~/services/user')
+const userService = require('~/modules/user/user.service')
 const emailService = require('~/services/email')
 const emailSubject = require('~/consts/emailSubject')
 const { oneDayInMs } = require('~/consts/auth')

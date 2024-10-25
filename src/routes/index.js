@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
-const auth = require('~/routes/auth')
-const user = require('~/routes/user')
+const auth = require('~/modules/auth/auth.routes')
+const user = require('~/modules/user/user.routes')
 const email = require('~/routes/email')
 const adminInvitation = require('~/routes/adminInvitation')
 const question = require('~/routes/question')

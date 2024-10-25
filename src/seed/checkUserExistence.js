@@ -1,4 +1,4 @@
-const User = require('~/models/user')
+const User = require('~/modules/user/user.model')
 const {
   roles: { SUPERADMIN }
 } = require('~/consts/auth')

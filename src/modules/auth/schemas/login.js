@@ -9,4 +9,4 @@ const loginValidationSchema = {
   }
 }
 
-module.exports = { loginValidationSchema }
+module.exports = loginValidationSchema

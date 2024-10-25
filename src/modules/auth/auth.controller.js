@@ -1,4 +1,3 @@
-const authService = require('~/services/auth')
 const { oneDayInMs } = require('~/consts/auth')
 const {
   config: { COOKIE_DOMAIN }
@@ -6,6 +5,8 @@ const {
 const {
   tokenNames: { REFRESH_TOKEN, ACCESS_TOKEN }
 } = require('~/consts/auth')
+
+const authService = require('./auth.service')
 
 const COOKIE_OPTIONS = {
   maxAge: oneDayInMs,

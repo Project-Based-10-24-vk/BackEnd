@@ -1,6 +1,6 @@
 const CronJob = require('cron').CronJob
 const tokenService = require('~/services/token')
-const userService = require('~/services/user')
+const userService = require('~/modules/user/user.service')
 const { tokenNames } = require('~/consts/auth')
 
 const EVERY_MIDNIGHT = '0 0 * * *'

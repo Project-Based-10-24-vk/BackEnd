@@ -1,6 +1,3 @@
-const tokenService = require('~/services/token')
-const emailService = require('~/services/email')
-const { getUserByEmail, createUser, privateUpdateUser, getUserById } = require('~/services/user')
 const { createError } = require('~/utils/errorsHelper')
 const {
   EMAIL_NOT_CONFIRMED,
@@ -14,10 +11,13 @@ const emailSubject = require('~/consts/emailSubject')
 const {
   tokenNames: { REFRESH_TOKEN, RESET_TOKEN, CONFIRM_TOKEN }
 } = require('~/consts/auth')
+const tokenService = require('~/services/token')
+const emailService = require('~/services/email')
+const userService = require('~/modules/user/user.service')
 
 const authService = {
   signup: async (role, firstName, lastName, email, password, language) => {
-    const user = await createUser(role, firstName, lastName, email, password, language)
+    const user = await userService.create(role, firstName, lastName, email, password, language)
 
     const confirmToken = tokenService.generateConfirmToken({ id: user._id, role })
     await tokenService.saveToken(user._id, confirmToken, CONFIRM_TOKEN)
@@ -29,7 +29,7 @@ const authService = {
   },
 
   login: async (email, password, isFromGoogle) => {
-    const user = await getUserByEmail(email)
+    const user = await userService.findOneByEmail(email)
 
     if (!user) {
       throw createError(401, USER_NOT_FOUND)
@@ -51,10 +51,10 @@ const authService = {
     await tokenService.saveToken(_id, tokens.refreshToken, REFRESH_TOKEN)
 
     if (isFirstLogin) {
-      await privateUpdateUser(_id, { isFirstLogin: false })
+      await userService.privateUpdate(_id, { isFirstLogin: false })
     }
 
-    await privateUpdateUser(_id, { lastLogin: new Date() })
+    await userService.privateUpdate(_id, { lastLogin: new Date() })
 
     return tokens
   },
@@ -71,7 +71,7 @@ const authService = {
       throw createError(400, BAD_REFRESH_TOKEN)
     }
 
-    const { _id, lastLoginAs, isFirstLogin } = await getUserById(tokenData.id)
+    const { _id, lastLoginAs, isFirstLogin } = await userService.findOneById(tokenData.id)
 
     const tokens = tokenService.generateTokens({ id: _id, role: lastLoginAs, isFirstLogin })
     await tokenService.saveToken(_id, tokens.refreshToken, REFRESH_TOKEN)
@@ -80,7 +80,7 @@ const authService = {
   },
 
   sendResetPasswordEmail: async (email, language) => {
-    const user = await getUserByEmail(email)
+    const user = await userService.findOneByEmail(email)
 
     if (!user) {
       throw createError(404, USER_NOT_FOUND)
@@ -103,7 +103,7 @@ const authService = {
     }
 
     const { id: userId, firstName, email } = tokenData
-    await privateUpdateUser(userId, { password })
+    await userService.privateUpdate(userId, { password })
 
     await tokenService.removeResetToken(userId)
 
@@ -122,7 +122,7 @@ const authService = {
 
     const { id: userId } = tokenData
 
-    await privateUpdateUser(userId, { isEmailConfirmed: true })
+    await userService.privateUpdate(userId, { isEmailConfirmed: true })
 
     await tokenService.removeConfirmToken(confirmToken)
   }

@@ -1,5 +1,5 @@
 const tokenService = require('~/services/token')
-const userService = require('~/services/user')
+const userService = require('~/modules/user/user.service')
 const { removeUsersWithUnconfirmedEmail } = require('~/cron-jobs/removeUnverifiedUsers')
 
 const userId = 'testId'
