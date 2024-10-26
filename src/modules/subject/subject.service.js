@@ -2,14 +2,27 @@ const Subject = require('./subject.model')
 
 const subjectService = {
   getSubjects: async () => {
-    const items = await Subject.find()
-    return { items }
+    const items = await Subject.find().lean().exec()
+    const count = await Subject.countDocuments()
+    return { count, items }
   },
 
   getSubjectById: async (id) => {
-    const subject = await Subject.findById(id).lean().exec()
-    return subject
+    return await Subject.findById(id).lean().exec()
   },
+
+  getSubjectsByCategoryId: async (categoryId, sort, skip = 0, limit = 10) => {
+    const items = await Subject.find({ category: categoryId })
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .lean()
+      .exec()
+    const count = await Subject.countDocuments()
+    return { count, items }
+  },
+
+  // Admin access
 
   createSubject: async (data) => {
     const subject = new Subject(data)
@@ -27,10 +40,6 @@ const subjectService = {
     return subject
   },
 
-  getSubjectsByCategoryId: async (categoryId) => {
-    const subjects = await Subject.find({ category: categoryId })
-    return subjects
-  },
 }
 
 module.exports = subjectService
