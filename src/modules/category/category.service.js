@@ -4,13 +4,22 @@ const categoryService = {
   create: async (data) => {
     const { name, icon, color } = data
     const newCategory = { name, appearance: { icon, color } }
-    const response = await Category.create(newCategory)
-    return response
+
+    return await Category.create(newCategory)
   },
-  findAll: async (match) => {
-    return await Category.find(match).lean().exec()
+  findMany: async (match) => {
+    const items = await Category.find(match).lean().exec()
+    const count = await Category.countDocuments(match)
+
+    return { count, items }
   },
-  findById: async (id) => {
+  findManyNames: async (match) => {
+    const items = await Category.find().select('name').lean().exec()
+    const count = await Category.countDocuments(match)
+
+    return { count, items }
+  },
+  findOneById: async (id) => {
     return await Category.findById(id).lean().exec()
   }
 }
