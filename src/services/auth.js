@@ -14,6 +14,7 @@ const emailSubject = require('~/consts/emailSubject')
 const {
   tokenNames: { REFRESH_TOKEN, RESET_TOKEN, CONFIRM_TOKEN }
 } = require('~/consts/auth')
+const { comparePassword, encryptPassword } = require('~/utils/encryptPassword')
 
 const authService = {
   signup: async (role, firstName, lastName, email, password, language) => {
@@ -35,7 +36,7 @@ const authService = {
       throw createError(401, USER_NOT_FOUND)
     }
 
-    const checkedPassword = password === user.password || isFromGoogle
+    const checkedPassword = comparePassword(password, user.password) || isFromGoogle
 
     if (!checkedPassword) {
       throw createError(401, INCORRECT_CREDENTIALS)
@@ -103,7 +104,10 @@ const authService = {
     }
 
     const { id: userId, firstName, email } = tokenData
-    await privateUpdateUser(userId, { password })
+
+    const hashedPassword = encryptPassword(password)
+
+    await privateUpdateUser(userId, { password: hashedPassword })
 
     await tokenService.removeResetToken(userId)
 

@@ -4,6 +4,7 @@ const { createError } = require('~/utils/errorsHelper')
 const { DOCUMENT_NOT_FOUND, ALREADY_REGISTERED } = require('~/consts/errors')
 const filterAllowedFields = require('~/utils/filterAllowedFields')
 const { allowedUserFieldsForUpdate } = require('~/validation/services/user')
+const { encryptPassword } = require('~/utils/encryptPassword')
 
 const userService = {
   getUsers: async ({ match, sort, skip, limit }) => {
@@ -50,13 +51,15 @@ const userService = {
       throw createError(409, ALREADY_REGISTERED)
     }
 
+    const hashedPassword = await encryptPassword(password)
+
     return await User.create({
       role,
       firstName,
       lastName,
       email,
       lastLoginAs: role,
-      password,
+      password: hashedPassword,
       appLanguage,
       isEmailConfirmed
     })
