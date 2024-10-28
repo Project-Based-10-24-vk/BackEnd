@@ -1,0 +1,10 @@
+definitions:
+  create:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      content:
+        type: string

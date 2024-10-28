@@ -1,0 +1,161 @@
+paths:
+  /lessons:
+    get:
+      tags:
+        - Lesson
+      summary: Get all lessons
+      description: Get all lessons
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                # type: array
+                # items:
+                #   $ref: '#/definitions/findAll'
+              example:
+                - _id: '67113a5f2ace5dcff0fa65b6'
+                  title: 'Lesson 1'
+                  description: 'This is lesson 1'
+                  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+                  author: '67113a5f2ace5dcff0fa65b6'
+                  category: '67113a5f2ace5dcff0fa65b6'
+                  resourceType: 'lessons'
+                  createdAt: '2024-10-17T16:25:03.678Z'
+                  updatedAt: '2024-10-17T16:25:03.678Z'
+                - _id: '67113a5f2ace5dcff0fa65b6'
+                  title: 'Lesson 1'
+                  description: 'This is lesson 1'
+                  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+                  author: '67113a5f2ace5dcff0fa65b6'
+                  category: '67113a5f2ace5dcff0fa65b6'
+                  resourceType: 'lessons'
+                  createdAt: '2024-10-17T16:25:03.678Z'
+                  updatedAt: '2024-10-17T16:25:03.678Z'
+    post:
+      security:
+        - cookieAuth: []
+      tags:
+        - Lesson
+      summary: Create a new lesson
+      description: Create a new lesson
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        description: Lesson object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/create'
+        example:
+          title: 'Lesson 1'
+          description: 'This is lesson 1'
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                # $ref: '#/definitions/createResponse'
+              example:
+                _id: '67113a5f2ace5dcff0fa65b6'
+                title: 'Lesson 1'
+                description: 'This is lesson 1'
+                content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+                author: '67113a5f2ace5dcff0fa65b6'
+                category: '67113a5f2ace5dcff0fa65b6'
+                resourceType: 'lessons'
+                createdAt: '2024-10-17T16:25:03.678Z'
+                updatedAt: '2024-10-17T16:25:03.678Z'
+  /lessons/{id}:
+    get:
+      tags:
+        - Lesson
+      summary: Get lesson by id
+      description: Get lesson by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of lesson to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                # $ref: '#/definitions/findById'
+              example:
+                _id: '67113a5f2ace5dcff0fa65b6'
+                title: 'Lesson 1'
+                description: 'This is lesson 1'
+                content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+                author: '67113a5f2ace5dcff0fa65b6'
+                category: '67113a5f2ace5dcff0fa65b6'
+                resourceType: 'lessons'
+                createdAt: '2024-10-17T16:25:03.678Z'
+                updatedAt: '2024-10-17T16:25:03.678Z'
+    patch:
+      security:
+        - cookieAuth: []
+      tags:
+        - Lesson
+      summary: Update lesson by id
+      description: Update lesson by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of lesson to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: Lesson object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/create'
+        example:
+          title: 'Lesson 1'
+          description: 'This is lesson 1'
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                # $ref: '#/definitions/createResponse'
+              example:
+                _id: '67113a5f2ace5dcff0fa65b6'
+                title: 'Lesson 1'
+                description: 'This is lesson 1'
+                content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+                author: '67113a5f2ace5dcff0fa65b6'
+                category: '67113a5f2ace5dcff0fa65b6'
+                resourceType: 'lessons'
+                createdAt: '2024-10-17T16:25:03.678Z'
+                updatedAt: '2024-10-17T16:25:03.678Z'
+    delete:
+      security:
+        - cookieAuth: []
+      tags:
+        - Lesson
+      summary: Delete lesson by id
+      description: Delete lesson by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of lesson to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: No Content
