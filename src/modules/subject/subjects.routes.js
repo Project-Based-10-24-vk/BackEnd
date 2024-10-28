@@ -28,7 +28,7 @@ router.get('/categories/:id/subjects', asyncWrapper(subjectController.subjectsFi
 
 router.use(restrictTo(ADMIN))
 // @desc    Create subject
-// @route 	POST /subject
+// @route 	POST /subjects
 // @access  Private (ADMIN)
 router.post('/', asyncWrapper(subjectController.subjectCreate))
 
