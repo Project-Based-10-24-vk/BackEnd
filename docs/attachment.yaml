@@ -1,0 +1,190 @@
+tags:
+  - name: Attachments
+    description: Operations related to attachments
+
+security:
+  - bearerAuth: []
+
+paths:
+  /attachments:
+    get:
+      tags:
+        - Attachments
+      summary: Get all attachments
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter attachments by name
+        - name: authorId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter attachments by author ID
+      responses:
+        '200':
+          description: List of attachments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Total number of attachments
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Attachment'
+
+    post:
+      tags:
+        - Attachments
+      summary: Create new attachments
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Attachment'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/Attachment'
+      responses:
+        '201':
+          description: Attachments created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Attachment'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Attachment'
+      examples:
+        single:
+          summary: Single attachment
+          value:
+            name: 'Sample Attachment'
+            size: 1024
+            url: 'http://example.com/attachment.pdf'
+            author: '60c72b2f9b1e8d001f8e4b75'
+        multiple:
+          summary: Multiple attachments
+          value:
+            - name: 'Sample Attachment 1'
+              size: 1024
+              url: 'http://example.com/attachment1.pdf'
+              author: '60c72b2f9b1e8d001f8e4b75'
+            - name: 'Sample Attachment 2'
+              size: 2048
+              url: 'http://example.com/attachment2.pdf'
+              author: '60c72b2f9b1e8d001f8e4b75'
+
+  /attachments/{id}:
+    get:
+      tags:
+        - Attachments
+      summary: Get an attachment by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the attachment
+      responses:
+        '200':
+          description: Attachment found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+        '404':
+          description: Attachment not found
+
+    patch:
+      tags:
+        - Attachments
+      summary: Update an attachment by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the attachment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attachment'
+      responses:
+        '200':
+          description: Attachment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+        '404':
+          description: Attachment not found
+        '403':
+          description: Forbidden
+
+    delete:
+      tags:
+        - Attachments
+      summary: Delete an attachment by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the attachment
+      responses:
+        '204':
+          description: Attachment deleted
+        '404':
+          description: Attachment not found
+        '403':
+          description: Forbidden
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Attachment:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Sample Attachment'
+        size:
+          type: number
+          example: 1024
+        url:
+          type: string
+          example: 'http://example.com/attachment.pdf'
+        author:
+          type: string
+          example: '60c72b2f9b1e8d001f8e4b75'
