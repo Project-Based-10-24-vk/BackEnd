@@ -22,6 +22,6 @@ router.use('/offers', offer)
 router.use('/location', location)
 router.use('/categories', category)
 router.use('/lessons', lesson)
-router.use('/subject', subjects)
+router.use('/subjects', subjects)
 
 module.exports = router

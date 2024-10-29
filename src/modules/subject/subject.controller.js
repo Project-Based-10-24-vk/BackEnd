@@ -16,6 +16,16 @@ const subjectFindById = async (req, res) => {
   res.status(200).json(subject)
 }
 
+const subjectsFindByCategoryId = async (req, res) => {
+  const { id } = req.params
+  const { sort = '', skip, limit } = req.query
+  const subjects = await subjectService.getSubjectsByCategoryId(id, sort, skip, limit)
+  
+  res.status(200).json(subjects)
+}
+
+// Admin access
+
 const subjectCreate = async (req, res) => {
   const data = req.body
   const subject = await subjectService.createSubject(data)
@@ -42,13 +52,6 @@ const subjectDelete = async (req, res) => {
   }
 
   res.status(204).send()
-}
-
-const subjectsFindByCategoryId = async (req, res) => {
-  const { id } = req.params
-  const subjects = await subjectService.getSubjectsByCategoryId(id)
-  
-  res.status(200).json(subjects)
 }
 
 module.exports = {
