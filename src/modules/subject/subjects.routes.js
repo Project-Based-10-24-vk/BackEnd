@@ -21,11 +21,6 @@ router.get('/', asyncWrapper(subjectController.subjectsFind))
 // @access  Private (Authenticated users)
 router.get('/:id', asyncWrapper(subjectController.subjectFindById))
 
-// @desc    Get all subject by categories id
-// @route 	GET /subjects/categories/:id/subjects
-// @access  Private (Authenticated users)
-router.get('/categories/:id/subjects', asyncWrapper(subjectController.subjectsFindByCategoryId))
-
 router.use(restrictTo(ADMIN))
 // @desc    Create subject
 // @route 	POST /subjects

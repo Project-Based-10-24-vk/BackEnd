@@ -28,6 +28,12 @@ router.get('/names', asyncWrapper(categoryController.findManyNames))
 // @access  Private (Authenticated users)
 router.get('/:id', asyncWrapper(categoryController.findOneById))
 
+
+// @desc    Get subjects by category id
+// @route 	GET /categories/:id/subjects
+// @access  Private (Authenticated users)
+router.get('/:id/subjects', asyncWrapper(categoryController.subjectsFindByCategoryId))
+
 router.use(restrictTo(ADMIN))
 // @desc    Create category
 // @route 	POST /categories

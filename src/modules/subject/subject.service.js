@@ -11,17 +11,6 @@ const subjectService = {
     return await Subject.findById(id).lean().exec()
   },
 
-  getSubjectsByCategoryId: async (categoryId, sort, skip = 0, limit = 10) => {
-    const items = await Subject.find({ category: categoryId })
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean()
-      .exec()
-    const count = await Subject.countDocuments()
-    return { count, items }
-  },
-
   // Admin access
 
   createSubject: async (data) => {

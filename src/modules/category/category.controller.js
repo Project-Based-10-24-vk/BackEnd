@@ -22,6 +22,14 @@ const findOneById = async (req, res) => {
   res.status(200).json(response)
 }
 
+const subjectsFindByCategoryId = async (req, res) => {
+  const { id } = req.params
+  const { sort = '', skip, limit } = req.query
+  const response = await categoryService.getSubjectsByCategoryId(id, sort, skip, limit)
+
+  res.status(200).json(response)
+}
+
 const create = async (req, res) => {
   const data = req.body
   const response = await categoryService.create(data)
@@ -32,5 +40,6 @@ module.exports = {
   findMany,
   findManyNames,
   findOneById,
-  create
+  create,
+  subjectsFindByCategoryId
 }
