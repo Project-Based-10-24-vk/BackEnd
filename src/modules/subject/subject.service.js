@@ -28,10 +28,9 @@ const subjectService = {
   },
 
   getSubjectsByCategoryId: async (categoryId) => {
-    const subjects = await Subject.find({ category: categoryId })
-    return subjects
-  },
+    const items = await Subject.find({ category: categoryId })
+    return { items }
+  }
 }
 
 module.exports = subjectService
-
