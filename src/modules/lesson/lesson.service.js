@@ -21,12 +21,12 @@ const lessonService = {
   },
 
   update: async (id, author, data) => {
-    const lesson = await lessonService.findById(id)
+    const lesson = await lessonService.findOneById(id)
 
     if (!lesson) {
       throw createNotFoundError()
     }
-    if (lesson.author !== author.toString()) {
+    if (lesson.author.toString() !== author.toString()) {
       throw createForbiddenError()
     }
 
@@ -36,12 +36,12 @@ const lessonService = {
   },
 
   remove: async (id, author) => {
-    const lesson = await lessonService.findById(id)
+    const lesson = await lessonService.findOneById(id)
 
     if (!lesson) {
       throw createNotFoundError()
     }
-    if (lesson.author !== author.toString()) {
+    if (lesson.author.toString() !== author.toString()) {
       throw createForbiddenError()
     }
 
