@@ -26,7 +26,7 @@ const lessonService = {
     if (!lesson) {
       throw createNotFoundError()
     }
-    if (lesson.author.toString() !== author.toString()) {
+    if (lesson.author.toString() !== author) {
       throw createForbiddenError()
     }
 
@@ -41,7 +41,7 @@ const lessonService = {
     if (!lesson) {
       throw createNotFoundError()
     }
-    if (lesson.author.toString() !== author.toString()) {
+    if (lesson.author.toString() !== author) {
       throw createForbiddenError()
     }
 
