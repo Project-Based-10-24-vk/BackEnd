@@ -1,5 +1,6 @@
 const getMatchOptions = require('~/utils/getMatchOptions')
 const getRegex = require('~/utils/getRegex')
+const getSortOptions = require('~/utils/getSortOptions')
 
 const categoryService = require('./category.service')
 
@@ -25,7 +26,8 @@ const findOneById = async (req, res) => {
 const subjectsFindByCategoryId = async (req, res) => {
   const { id } = req.params
   const { sort = '', skip, limit } = req.query
-  const response = await categoryService.getSubjectsByCategoryId(id, sort, skip, limit)
+  const sortOptions = getSortOptions(sort)
+  const response = await categoryService.getSubjectsByCategoryId(id, sortOptions, skip, limit)
 
   res.status(200).json(response)
 }

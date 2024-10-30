@@ -1,5 +1,5 @@
 paths:
-  /subject:
+  /subjects:
     get:
       summary: Get all subjects
       description: Returns a list of all subjects with their id, name, and category.
@@ -46,7 +46,7 @@ paths:
         '500':
           description: Internal server error
 
-  /subject/{id}:
+  /subjects/{id}:
     get:
       summary: Get subject by ID
       description: Returns the details of a subject by its ID.
@@ -93,7 +93,7 @@ paths:
         '500':
           description: Internal server error
 
-  /subject/categories/{categoryId}/subjects:
+    /categories/{categoryId}/subjects:
     get:
       summary: Get all subjects by category ID
       description: Returns a list of all subjects that belong to the specified category.
@@ -147,7 +147,7 @@ paths:
         '500':
           description: Internal server error
 
-  /subject:
+  /subjects:
     post:
       summary: Create a new subject
       description: Adds a new subject to the database.
@@ -202,7 +202,7 @@ paths:
         '500':
           description: Internal server error
 
-  /subject/{id}:
+  /subjects/{id}:
     put:
       summary: Update a subject
       description: Updates an existing subject by its ID.
@@ -266,7 +266,7 @@ paths:
         '500':
           description: Internal server error
 
-  /subject/{id}:
+  /subjects/{id}:
     delete:
       summary: Delete a subject
       description: Deletes a subject by its ID.
