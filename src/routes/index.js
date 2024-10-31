@@ -11,6 +11,7 @@ const location = require('~/routes/location')
 const category = require('~/modules/category/category.routes')
 const lesson = require('~/modules/lesson/lesson.routes')
 const subjects = require('~/modules/subject/subjects.routes')
+const attachment = require('~/modules/attachment/attachment.routes')
 
 router.use('/auth', auth)
 router.use('/users', user)
@@ -23,5 +24,6 @@ router.use('/location', location)
 router.use('/categories', category)
 router.use('/lessons', lesson)
 router.use('/subject', subjects)
+router.use('/attachments', attachment)
 
 module.exports = router
