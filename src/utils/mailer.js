@@ -15,7 +15,6 @@ const getAccessToken = async () => {
 
     oAuth2Client.setCredentials({ refresh_token: refreshToken })
     const accessToken = await oAuth2Client.getAccessToken()
-
     return accessToken
   } catch (err) {
     logger.error(err)
