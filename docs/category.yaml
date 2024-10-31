@@ -1,0 +1,142 @@
+paths:
+  /categories:
+    post:
+      security:
+        - cookieAuth: []
+      tags:
+        - Category
+      summary: Create a new category
+      parameters:
+        required: false
+      description: Create a new category
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        description: Category object that needs to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/create'
+            example:
+              name: Category 1
+              icon: mocked-path-to-icon
+              color: '#66C42C'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/createResponse'
+              example:
+                _id: 67113a5f2ace5dcff0fa65b6
+                name: category 1
+                appearance:
+                  icon: mocked-path-to-icon
+                  color: '#66C42C'
+                createdAt: 2024-10-17T16:25:03.678Z
+                updatedAt: 2024-10-17T16:25:03.678Z
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Error'
+              example:
+                status: 400
+                code: 'BAD_REQUEST'
+                message: 'The request could not be processed due to invalid or missing parameters.'
+    get:
+      security:
+        - cookieAuth: []
+        - basicAuth: []
+      tags:
+        - Category
+      summary: Get all categories or search by name
+      description: Get all categories or search by name
+      parameters:
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+          description: Name of the category to search
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/definitions/findAllByQuery'
+              example:
+                - _id: 67113a5f2ace5dcff0fa65b6
+                  name: category 1
+                  appearance:
+                    icon: mocked-path-to-icon
+                    color: '#66C42C'
+                  createdAt: 2024-10-17T16:25:03.678Z
+                  updatedAt: 2024-10-17T16:25:03.678Z
+                - _id: 67113a5f2ace5dcff0fa65b7
+                  name: category 2
+                  appearance:
+                    icon: mocked-path-to-icon
+                    color: '#66C42C'
+                  createdAt: 2024-10-17T16:25:03.678Z
+                  updatedAt: 2024-10-17T16:25:03.678Z
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Error'
+              example:
+                status: 400
+                code: 'BAD_REQUEST'
+                message: 'The request could not be processed due to invalid or missing parameters.'
+  /categories/{id}:
+    get:
+      security:
+        - cookieAuth: []
+      tags:
+        - Category
+      summary: Get category by id
+      description: Get category by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Category id
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/findOneByIdResponse'
+              example:
+                _id: 67113a5f2ace5dcff0fa65b6
+                name: category 1
+                appearance:
+                  icon: mocked-path-to-icon
+                  color: '#66C42C'
+                createdAt: 2024-10-17T16:25:03.678Z
+                updatedAt: 2024-10-17T16:25:03.678Z
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Error'
+              example:
+                status: 400
+                code: 'BAD_REQUEST'
+                message: 'The request could not be processed due to invalid or missing parameters.'
