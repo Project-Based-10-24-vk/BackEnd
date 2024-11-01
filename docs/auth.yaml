@@ -1,4 +1,22 @@
 paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: User login
+      description: Logs in a user and returns a token.
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        description: Provide required data to log in.
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/login'
+            example:
+              email: tutor@gmail.com
+              password: Dgecnb123
   /auth/signup:
     post:
       tags:
