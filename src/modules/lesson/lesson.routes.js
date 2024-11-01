@@ -18,6 +18,9 @@ const params = [{ model: Lesson, idName: 'id' }]
 
 router.param('id', idValidation)
 
+router.use(authMiddleware)
+router.use(restrictTo(TUTOR, ADMIN))
+
 // @desc    Get all lessons
 // @route 	GET /lessons
 // @access  Public
@@ -27,9 +30,6 @@ router.get('/', asyncWrapper(lessonController.findMany))
 // @route 	GET /lessons/:id
 // @access  Public
 router.get('/:id', isEntityValid({ params }), asyncWrapper(lessonController.findOneById))
-
-router.use(authMiddleware)
-router.use(restrictTo(TUTOR, ADMIN))
 
 // @desc    Create lesson
 // @route 	POST /lessons

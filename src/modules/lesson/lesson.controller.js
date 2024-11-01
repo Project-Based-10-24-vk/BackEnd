@@ -1,4 +1,5 @@
 const lessonService = require('./lesson.service')
+const getMatchOptions = require('~/utils/getMatchOptions')
 
 const create = async (req, res) => {
   const { id: author } = req.user
@@ -9,7 +10,9 @@ const create = async (req, res) => {
 }
 
 const findMany = async (req, res) => {
-  const response = await lessonService.findMany()
+  const { id: author } = req.user
+  const match = getMatchOptions({ author })
+  const response = await lessonService.findMany(match)
   res.status(200).json(response)
 }
 
