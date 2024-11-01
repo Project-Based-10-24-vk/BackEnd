@@ -1,4 +1,5 @@
 const Category = require('./category.model')
+const Subject = require('../subject/subject.model')
 
 const categoryService = {
   create: async (data) => {
@@ -21,7 +22,17 @@ const categoryService = {
   },
   findOneById: async (id) => {
     return await Category.findById(id).lean().exec()
-  }
+  },
+  getSubjectsByCategoryId: async (categoryId, sort, skip = 0, limit = 10) => {
+    const items = await Subject.find({ category: categoryId })
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .lean()
+      .exec()
+    const count = await Subject.countDocuments()
+    return { count, items }
+  },
 }
 
 module.exports = categoryService

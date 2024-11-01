@@ -1,0 +1,297 @@
+paths:
+  /subjects:
+    get:
+      summary: Get all subjects
+      description: Returns a list of all subjects with their id, name, and category.
+      tags:
+        - Subject
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: A list of subjects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Total number of subjects
+                    example: 10
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: The unique identifier of the subject
+                          example: "67113c01df0ec401f6efd300"
+                        name:
+                          type: string
+                          description: The name of the subject
+                          example: "Mathematics"
+                        category:
+                          type: string
+                          description: The category id the subject belongs to
+                          example: "670fbe3b702a8fef395d6d6c"
+        '401':
+          description: Unauthorized, missing or invalid token
+        '500':
+          description: Internal server error
+
+  /subjects/{id}:
+    get:
+      summary: Get subject by ID
+      description: Returns the details of a subject by its ID.
+      tags:
+        - Subject
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the subject to retrieve
+          example: "67113c01df0ec401f6efd300"
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: Subject details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The unique identifier of the subject
+                    example: "67113c01df0ec401f6efd300"
+                  name:
+                    type: string
+                    description: The name of the subject
+                    example: "Mathematics"
+                  category:
+                    type: string
+                    description: The category id the subject belongs to
+                    example: "670fbe3b702a8fef395d6d6c"
+        '404':
+          description: Subject not found
+        '401':
+          description: Unauthorized, missing or invalid token
+        '500':
+          description: Internal server error
+
+    /categories/{categoryId}/subjects:
+    get:
+      summary: Get all subjects by category ID
+      description: Returns a list of all subjects that belong to the specified category.
+      tags:
+        - Subject
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: string
+          description: ID of the category to retrieve subjects for
+          example: "670fbe3b702a8fef395d6d6c"
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication
+      responses:
+        '200':
+          description: A list of subjects for the specified category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Total number of subjects in the category
+                    example: 5
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: The unique identifier of the subject
+                          example: "67113c01df0ec401f6efd300"
+                        name:
+                          type: string
+                          description: The name of the subject
+                          example: "Mathematics"
+        '400':
+          description: Bad request, invalid or missing category ID
+        '401':
+          description: Unauthorized, missing or invalid token
+        '404':
+          description: No subjects found for the given category ID
+        '500':
+          description: Internal server error
+
+  /subjects:
+    post:
+      summary: Create a new subject
+      description: Adds a new subject to the database.
+      tags:
+        - Subject
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the new subject
+                  example: "Physics"
+                category:
+                  type: string
+                  description: The category ID for the new subject
+                  example: "670fbe3b702a8fef395d6d6c"
+      responses:
+        '201':
+          description: Subject created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The unique identifier of the newly created subject
+                    example: "67113c01df0ec401f6efd301"
+                  name:
+                    type: string
+                    description: The name of the newly created subject
+                    example: "Physics"
+                  category:
+                    type: string
+                    description: The category ID the subject belongs to
+                    example: "670fbe3b702a8fef395d6d6c"
+        '400':
+          description: Bad request, invalid data
+        '401':
+          description: Unauthorized, missing or invalid token
+        '500':
+          description: Internal server error
+
+  /subjects/{id}:
+    put:
+      summary: Update a subject
+      description: Updates an existing subject by its ID.
+      tags:
+        - Subject
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the subject to update
+          example: "67113c01df0ec401f6efd300"
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The new name of the subject
+                  example: "Advanced Mathematics"
+                category:
+                  type: string
+                  description: The new category ID for the subject
+                  example: "670fbe3b702a8fef395d6d6c"
+      responses:
+        '200':
+          description: Subject updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The unique identifier of the updated subject
+                    example: "67113c01df0ec401f6efd300"
+                  name:
+                    type: string
+                    description: The name of the updated subject
+                    example: "Advanced Mathematics"
+                  category:
+                    type: string
+                    description: The updated category ID
+                    example: "670fbe3b702a8fef395d6d6c"
+        '404':
+          description: Subject not found
+        '401':
+          description: Unauthorized, missing or invalid token
+        '400':
+          description: Bad request, invalid data
+        '500':
+          description: Internal server error
+
+  /subjects/{id}:
+    delete:
+      summary: Delete a subject
+      description: Deletes a subject by its ID.
+      tags:
+        - Subject
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID of the subject to delete
+          example: "67113c01df0ec401f6efd300"
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication
+      responses:
+        '204':
+          description: Subject deleted successfully
+        '404':
+          description: Subject not found
+        '401':
+          description: Unauthorized, missing or invalid token
+        '500':
+          description: Internal server error

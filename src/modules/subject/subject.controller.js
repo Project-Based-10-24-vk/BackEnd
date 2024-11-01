@@ -1,54 +1,49 @@
 const subjectService = require('./subject.service')
 
 const subjectsFind = async (req, res) => {
-  const subjects = await subjectService.getSubjects()
-  res.status(200).json(subjects)
+  const response = await subjectService.getSubjects()
+  res.status(200).json(response)
 }
 
 const subjectFindById = async (req, res) => {
   const { id } = req.params
-  const subject = await subjectService.getSubjectById(id)
+  const response = await subjectService.getSubjectById(id)
 
-  if (!subject) {
+  if (!response) {
     return res.status(404).json({ message: 'Subject not found' })
   }
 
-  res.status(200).json(subject)
+  res.status(200).json(response)
 }
+
+// Admin access
 
 const subjectCreate = async (req, res) => {
   const data = req.body
-  const subject = await subjectService.createSubject(data)
-  res.status(201).json(subject)
+  const response = await subjectService.createSubject(data)
+  res.status(201).json(response)
 }
 
 const subjectUpdate = async (req, res) => {
   const { id } = req.params
-  const subject = await subjectService.updateSubject(id, req.body)
+  const response = await subjectService.updateSubject(id, req.body)
 
-  if (!subject) {
+  if (!response) {
     return res.status(404).json({ message: 'Subject not found' })
   }
 
-  res.status(200).json(subject)
+  res.status(200).json(response)
 }
 
 const subjectDelete = async (req, res) => {
   const { id } = req.params
-  const subject = await subjectService.deleteSubject(id)
+  const response = await subjectService.deleteSubject(id)
 
-  if (!subject) {
+  if (!response) {
     return res.status(404).json({ message: 'Subject not found' })
   }
 
   res.status(204).send()
-}
-
-const subjectsFindByCategoryId = async (req, res) => {
-  const { id } = req.params
-  const subjects = await subjectService.getSubjectsByCategoryId(id)
-  
-  res.status(200).json(subjects)
 }
 
 module.exports = {
@@ -57,5 +52,4 @@ module.exports = {
   subjectCreate,
   subjectUpdate,
   subjectDelete,
-  subjectsFindByCategoryId,
 }
