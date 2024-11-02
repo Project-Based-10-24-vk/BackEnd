@@ -12,9 +12,10 @@ const {
 } = require('~/consts/errors')
 const emailSubject = require('~/consts/emailSubject')
 const {
-  tokenNames: { REFRESH_TOKEN, RESET_TOKEN, CONFIRM_TOKEN }
+  tokenNames: { REFRESH_TOKEN, RESET_TOKEN, CONFIRM_TOKEN },
+  hashSalt
 } = require('~/consts/auth')
-const { comparePassword, encryptPassword } = require('~/utils/encryptPassword')
+const bcrypt = require('bcrypt')
 
 const authService = {
   signup: async (role, firstName, lastName, email, password, language) => {
@@ -23,6 +24,7 @@ const authService = {
     const confirmToken = tokenService.generateConfirmToken({ id: user._id, role })
     await tokenService.saveToken(user._id, confirmToken, CONFIRM_TOKEN)
     await emailService.sendEmail(email, emailSubject.EMAIL_CONFIRMATION, language, { confirmToken, email, firstName })
+
     return {
       userId: user._id,
       userEmail: user.email
@@ -35,10 +37,9 @@ const authService = {
     if (!user) {
       throw createError(401, USER_NOT_FOUND)
     }
+    const isPasswordCompare = (await bcrypt.compare(password, user.password)) || isFromGoogle
 
-    const checkedPassword = comparePassword(password, user.password) || isFromGoogle
-
-    if (!checkedPassword) {
+    if (!isPasswordCompare) {
       throw createError(401, INCORRECT_CREDENTIALS)
     }
 
@@ -105,7 +106,7 @@ const authService = {
 
     const { id: userId, firstName, email } = tokenData
 
-    const hashedPassword = encryptPassword(password)
+    const hashedPassword = await bcrypt.hash(password, hashSalt)
 
     await privateUpdateUser(userId, { password: hashedPassword })
 
