@@ -9,9 +9,9 @@ const lessonService = {
     })
   },
 
-  findMany: async () => {
-    const count = await Lesson.countDocuments().exec()
-    const items = await Lesson.find().lean().exec()
+  findMany: async (match) => {
+    const count = await Lesson.countDocuments(match).exec()
+    const items = await Lesson.find(match).lean().exec()
 
     return { count, items }
   },

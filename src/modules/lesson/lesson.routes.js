@@ -18,18 +18,19 @@ const params = [{ model: Lesson, idName: 'id' }]
 
 router.param('id', idValidation)
 
-// @desc    Get all lessons
-// @route 	GET /lessons
-// @access  Public
-router.get('/', asyncWrapper(lessonController.findMany))
+router.use(authMiddleware)
 
 // @desc    Get lesson by id
 // @route 	GET /lessons/:id
 // @access  Public
 router.get('/:id', isEntityValid({ params }), asyncWrapper(lessonController.findOneById))
 
-router.use(authMiddleware)
 router.use(restrictTo(TUTOR, ADMIN))
+
+// @desc    Get all lessons
+// @route 	GET /lessons
+// @access  Public
+router.get('/', asyncWrapper(lessonController.findMany))
 
 // @desc    Create lesson
 // @route 	POST /lessons
