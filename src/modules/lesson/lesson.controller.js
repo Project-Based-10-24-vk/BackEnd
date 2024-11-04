@@ -1,5 +1,5 @@
 const lessonService = require('./lesson.service')
-const getMatchOptions = require('~/utils/getMatchOptions')
+const args = require('~/utils/getArgs')
 
 const create = async (req, res) => {
   const { id: author } = req.user
@@ -10,9 +10,20 @@ const create = async (req, res) => {
 }
 
 const findMany = async (req, res) => {
+  const [match, sortOptions, skip, limit] = args(req.query)
+
+  const response = await lessonService.findMany(match, sortOptions, skip, limit)
+
+  res.status(200).json(response)
+}
+
+const findManyOwn = async (req, res) => {
   const { id: author } = req.user
-  const match = getMatchOptions({ author })
-  const response = await lessonService.findMany(match)
+
+  const [match, sortOptions, skip, limit] = args(req.query, author)
+
+  const response = await lessonService.findMany(match, sortOptions, skip, limit)
+
   res.status(200).json(response)
 }
 
@@ -43,6 +54,7 @@ const remove = async (req, res) => {
 module.exports = {
   create,
   findMany,
+  findManyOwn,
   findOneById,
   update,
   remove

@@ -5,33 +5,39 @@ const isEntityValid = require('~/middlewares/entityValidation')
 const idValidation = require('~/middlewares/idValidation')
 const asyncWrapper = require('~/middlewares/asyncWrapper')
 const {
-  roles: { TUTOR, ADMIN }
+  roles: { TUTOR, ADMIN, STUDENT }
 } = require('~/consts/auth')
 
 const Lesson = require('./lesson.model')
-const Category = require('~/modules/category/category.model')
+const ResourcesCategory = require('~/models/resourcesCategory')
 const lessonController = require('./lesson.controller')
 const { lessonValidation } = require('./lesson.schemas')
 
-const body = [{ model: Category, idName: 'category' }]
+const body = [{ model: ResourcesCategory, idName: 'category' }]
 const params = [{ model: Lesson, idName: 'id' }]
 
 router.param('id', idValidation)
 
 router.use(authMiddleware)
 
+// @desc    Get all lessons
+// @route 	GET /lessons
+// @access  Private (Authenticated users)
+router.get('/', asyncWrapper(lessonController.findMany))
+
+// @desc    Get lesson by id
+// @route 	GET /lessons/own
+// @access  Private
+router.use(restrictTo(TUTOR))
+router.get('/own', asyncWrapper(lessonController.findManyOwn))
+
 // @desc    Get lesson by id
 // @route 	GET /lessons/:id
-// @access  Public
+// @access  Private (Authenticated users)
+router.use(restrictTo(TUTOR, ADMIN, STUDENT))
 router.get('/:id', isEntityValid({ params }), asyncWrapper(lessonController.findOneById))
 
 router.use(restrictTo(TUTOR, ADMIN))
-
-// @desc    Get all lessons
-// @route 	GET /lessons
-// @access  Public
-router.get('/', asyncWrapper(lessonController.findMany))
-
 // @desc    Create lesson
 // @route 	POST /lessons
 // @access  Private
@@ -41,6 +47,8 @@ router.post(
   validationMiddleware(lessonValidation.CREATE),
   asyncWrapper(lessonController.create)
 )
+
+// GET /lessons/own
 
 // @desc    Update lesson
 // @route 	PATCH /lessons/:id
