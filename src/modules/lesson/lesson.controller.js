@@ -19,7 +19,6 @@ const findMany = async (req, res) => {
 
 const findManyOwn = async (req, res) => {
   const { id: author } = req.user
-
   const [match, sortOptions, skip, limit] = args(req.query, author)
 
   const response = await lessonService.findMany(match, sortOptions, skip, limit)
