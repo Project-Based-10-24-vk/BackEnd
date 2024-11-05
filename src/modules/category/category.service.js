@@ -8,15 +8,23 @@ const categoryService = {
 
     return await Category.create(newCategory)
   },
-  findMany: async (match) => {
-    const items = await Category.find(match).lean().exec()
+
+  findMany: async (match, sort, skip, limit) => {
     const count = await Category.countDocuments(match)
+    const items = await Category.find(match)
+      .collation({ locale: 'en', strength: 1 })
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .lean()
+      .exec()
 
     return { count, items }
   },
-  findManyNames: async (match) => {
-    const items = await Category.find().select('name').lean().exec()
+
+  findManyNames: async (match, sort, skip, limit) => {
     const count = await Category.countDocuments(match)
+    const items = await Category.find(match).select('name').sort(sort).skip(skip).limit(limit).lean().exec()
 
     return { count, items }
   },
@@ -24,15 +32,10 @@ const categoryService = {
     return await Category.findById(id).lean().exec()
   },
   getSubjectsByCategoryId: async (categoryId, sort, skip = 0, limit = 10) => {
-    const items = await Subject.find({ category: categoryId })
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean()
-      .exec()
+    const items = await Subject.find({ category: categoryId }).sort(sort).skip(skip).limit(limit).lean().exec()
     const count = await Subject.countDocuments()
     return { count, items }
-  },
+  }
 }
 
 module.exports = categoryService

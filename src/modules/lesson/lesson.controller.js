@@ -1,5 +1,8 @@
 const lessonService = require('./lesson.service')
-const args = require('~/utils/getArgs')
+const getMatchOptions = require('~/utils/getMatchOptions')
+const getSortOptions = require('~/utils/getSortOptions')
+const getRegex = require('~/utils/getRegex')
+const qs = require('qs')
 
 const create = async (req, res) => {
   const { id: author } = req.user
@@ -10,16 +13,23 @@ const create = async (req, res) => {
 }
 
 const findMany = async (req, res) => {
-  const [match, sortOptions, skip, limit] = args(req.query)
+  const parsedQuery = qs.parse(req.query)
+  const { name = '', category = '', sort, skip = 0, limit = 5 } = parsedQuery
+
+  const match = getMatchOptions({ title: getRegex(name), category })
+  const sortOptions = getSortOptions(sort)
 
   const response = await lessonService.findMany(match, sortOptions, skip, limit)
-
   res.status(200).json(response)
 }
 
 const findManyOwn = async (req, res) => {
   const { id: author } = req.user
-  const [match, sortOptions, skip, limit] = args(req.query, author)
+  const parsedQuery = qs.parse(req.query)
+  const { name = '', category = '', sort, skip = 0, limit = 5 } = parsedQuery
+
+  const match = getMatchOptions({ author, title: getRegex(name), category })
+  const sortOptions = getSortOptions(sort)
 
   const response = await lessonService.findMany(match, sortOptions, skip, limit)
 

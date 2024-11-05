@@ -1,19 +1,29 @@
 const getMatchOptions = require('~/utils/getMatchOptions')
 const getRegex = require('~/utils/getRegex')
 const getSortOptions = require('~/utils/getSortOptions')
+const qs = require('qs')
 
 const categoryService = require('./category.service')
 
 const findMany = async (req, res) => {
-  const { name = '' } = req.query
-  const match = getMatchOptions({ name: getRegex(name) })
+  const parsedQuery = qs.parse(req.query)
+  const { name = '', sort, skip = 0, limit = 5 } = parsedQuery
 
-  const response = await categoryService.findMany(match)
+  const match = getMatchOptions({ name: getRegex(name) })
+  const sortOptions = getSortOptions(sort)
+
+  const response = await categoryService.findMany(match, sortOptions, skip, limit)
   res.status(200).json(response)
 }
 
 const findManyNames = async (req, res) => {
-  const response = await categoryService.findManyNames()
+  const parsedQuery = qs.parse(req.query)
+  const { name = '', sort, skip = 0, limit = 100 } = parsedQuery
+
+  const match = getMatchOptions({ name: getRegex(name) })
+  const sortOptions = getSortOptions(sort)
+
+  const response = await categoryService.findManyNames(match, sortOptions, skip, limit)
   res.status(200).json(response)
 }
 
