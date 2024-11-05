@@ -7,7 +7,7 @@ const getRegex = require('~/utils/getRegex')
 const getQuestions = async (req, res) => {
   const { id: author } = req.user
   const { title = '', sort = '', skip, limit, categories } = req.query
-  const categoriesOptions = getCategoriesOptions([categories])
+  const categoriesOptions = getCategoriesOptions(categories)
 
   const match = getMatchOptions({
     author,
