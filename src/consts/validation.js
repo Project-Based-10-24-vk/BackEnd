@@ -10,7 +10,7 @@ const regex = {
   PASSWORD_PATTERN: /^(?=.*\d)(?=.*[a-zа-яєії])\S+$/i,
   NAME_PATTERN: /^[a-zа-яєії]+$/i,
   COLOR_PATTERN: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i,
-  URL_PATTERN: /^https?:\/\/(?:www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,6})(\/[^\s]*)?$/
+  URL_PATTERN: /^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}(\/[^\s]*)?$/
 }
 
 const enums = {

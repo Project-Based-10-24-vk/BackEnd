@@ -5,6 +5,38 @@ const {
 } = require('~/consts/auth')
 const attachmentService = require('./attachment.service')
 
+const create = async (req, res) => {
+  const attachments = req.files
+
+  if (!attachments || attachments.length === 0) {
+    return res.status(400).json({ error: 'No files uploaded.' })
+  }
+
+  try {
+    const uploadedFiles = await Promise.all(
+      attachments.map(async (attachment) => {
+        const { url, extension } = await attachmentService.uploadToStorage(attachment)
+        return {
+          name: attachment.originalname,
+          size: attachment.size,
+          url,
+          extension
+        }
+      })
+    )
+
+    const newAttachments = await Promise.all(
+      uploadedFiles.map(async (file) => {
+        return await attachmentService.create(req.user.id, file)
+      })
+    )
+
+    return res.status(201).json(newAttachments)
+  } catch (error) {
+    return res.status(500).json({ error: error.message })
+  }
+}
+
 const findMany = async (req, res) => {
   const { name = '', authorId } = req.query
   const matchOptions = { name: getRegex(name) }
@@ -15,14 +47,6 @@ const findMany = async (req, res) => {
 
   const response = await attachmentService.findMany(getMatchOptions(matchOptions))
   res.status(200).json(response)
-}
-
-const create = async (req, res) => {
-  const { id: author } = req.user
-  const data = req.body
-
-  const response = await attachmentService.create(author, data)
-  res.status(201).json(response)
 }
 
 const findById = async (req, res) => {
@@ -57,18 +81,24 @@ const update = async (req, res) => {
 const deleteAttachment = async (req, res) => {
   const { id } = req.params
 
-  const attachment = await attachmentService.findById(id)
+  try {
+    const attachment = await attachmentService.findById(id)
 
-  if (!attachment) {
-    return res.status(404).json({ message: 'Attachment not found' })
+    if (!attachment) {
+      return res.status(404).json({ message: 'Attachment not found' })
+    }
+
+    if (req.user.id !== attachment.author.toString() && req.user.role !== ADMIN) {
+      return res.status(403).json({ message: 'Forbidden' })
+    }
+
+    await attachmentService.delete(id)
+
+    return res.status(204).send()
+  } catch (error) {
+    console.error(`Error deleting attachment: ${error.message}`)
+    return res.status(500).json({ message: 'Error deleting attachment' })
   }
-
-  if (req.user.id !== attachment.author.toString() && req.user.role !== ADMIN) {
-    return res.status(403).json({ message: 'Forbidden' })
-  }
-
-  await attachmentService.delete(id)
-  res.status(204).send()
 }
 
 module.exports = {

@@ -20,15 +20,18 @@ describe('Attachment Model Test', () => {
       name: 'testattachment',
       author: authorId,
       size: 123,
-      url: 'http://mocked-url.com'
+      url: 'http://mocked-url.com',
+      extension: 'jpg'
     })
 
     const savedAttachment = await validAttachment.save()
+
     expect(savedAttachment._id).toBeDefined()
     expect(savedAttachment.name).toBe('testattachment')
     expect(savedAttachment.author.toString()).toBe(authorId.toString())
     expect(savedAttachment.size).toBe(123)
     expect(savedAttachment.url).toBe('http://mocked-url.com')
+    expect(savedAttachment.extension).toBe('jpg')
   })
 
   it('should fail to create attachment without required fields', async () => {
