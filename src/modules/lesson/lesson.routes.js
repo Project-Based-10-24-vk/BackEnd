@@ -5,7 +5,7 @@ const isEntityValid = require('~/middlewares/entityValidation')
 const idValidation = require('~/middlewares/idValidation')
 const asyncWrapper = require('~/middlewares/asyncWrapper')
 const {
-  roles: { TUTOR, ADMIN, STUDENT }
+  roles: { TUTOR, ADMIN }
 } = require('~/consts/auth')
 
 const Lesson = require('./lesson.model')
@@ -28,13 +28,11 @@ router.get('/', asyncWrapper(lessonController.findMany))
 // @desc    Get lesson by id
 // @route 	GET /lessons/own
 // @access  Private
-router.use(restrictTo(TUTOR))
-router.get('/own', asyncWrapper(lessonController.findManyOwn))
+router.get('/own', restrictTo(TUTOR), asyncWrapper(lessonController.findManyOwn))
 
 // @desc    Get lesson by id
 // @route 	GET /lessons/:id
 // @access  Private (Authenticated users)
-router.use(restrictTo(TUTOR, ADMIN, STUDENT))
 router.get('/:id', isEntityValid({ params }), asyncWrapper(lessonController.findOneById))
 
 router.use(restrictTo(TUTOR, ADMIN))
@@ -47,8 +45,6 @@ router.post(
   validationMiddleware(lessonValidation.CREATE),
   asyncWrapper(lessonController.create)
 )
-
-// GET /lessons/own
 
 // @desc    Update lesson
 // @route 	PATCH /lessons/:id
