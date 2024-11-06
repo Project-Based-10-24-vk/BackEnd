@@ -8,7 +8,7 @@ const upload = multer({
     fieldNameSize: 100
   },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|pdf/
+    const allowedTypes = /jpeg|jpg|png|pdf|mp4|avi|mkv|webm|doc|docx|xls|xlsx/
     const extension = file.mimetype.split('/')[1]
     if (allowedTypes.test(extension)) {
       cb(null, true)
