@@ -1,5 +1,4 @@
 const getCategoriesOptions = (categories) => {
-  console.log(categories)
   if (categories === undefined) {
     return
   }
