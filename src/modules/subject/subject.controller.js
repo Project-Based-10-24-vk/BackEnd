@@ -1,55 +1,58 @@
+const getMatchOptions = require('~/utils/getMatchOptions')
+const getSortOptions = require('~/utils/getSortOptions')
+const getRegex = require('~/utils/getRegex')
+const qs = require('qs')
 const subjectService = require('./subject.service')
 
-const subjectsFind = async (req, res) => {
-  const response = await subjectService.getSubjects()
+const findMany = async (req, res) => {
+  const parsedQuery = qs.parse(req.query)
+  const { name = '', category = '', sort, skip = 0, limit = 100 } = parsedQuery
+
+  const match = getMatchOptions({ name: getRegex(name), category })
+  const sortOptions = getSortOptions(sort)
+
+  const response = await subjectService.findMany(match, sortOptions, skip, limit)
   res.status(200).json(response)
 }
 
-const subjectFindById = async (req, res) => {
+const findOneById = async (req, res) => {
   const { id } = req.params
-  const response = await subjectService.getSubjectById(id)
 
-  if (!response) {
-    return res.status(404).json({ message: 'Subject not found' })
-  }
+  const response = await subjectService.findOneById(id)
+
+  // if (!response) {
+  //   return res.status(404).json({ message: 'Subject not found' })
+  // }
 
   res.status(200).json(response)
 }
 
-// Admin access
-
-const subjectCreate = async (req, res) => {
+const create = async (req, res) => {
   const data = req.body
-  const response = await subjectService.createSubject(data)
+
+  const response = await subjectService.create(data)
   res.status(201).json(response)
 }
 
-const subjectUpdate = async (req, res) => {
+const update = async (req, res) => {
   const { id } = req.params
-  const response = await subjectService.updateSubject(id, req.body)
+  const data = req.body
 
-  if (!response) {
-    return res.status(404).json({ message: 'Subject not found' })
-  }
-
+  const response = await subjectService.update(id, data)
   res.status(200).json(response)
 }
 
-const subjectDelete = async (req, res) => {
+const remove = async (req, res) => {
   const { id } = req.params
-  const response = await subjectService.deleteSubject(id)
 
-  if (!response) {
-    return res.status(404).json({ message: 'Subject not found' })
-  }
-
-  res.status(204).send()
+  await subjectService.remove(id)
+  res.status(204).end()
 }
 
 module.exports = {
-  subjectsFind,
-  subjectFindById,
-  subjectCreate,
-  subjectUpdate,
-  subjectDelete,
+  findMany,
+  findOneById,
+  create,
+  update,
+  remove
 }

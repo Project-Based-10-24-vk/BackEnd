@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const { LESSON, USER, CATEGORY } = require('~/consts/models')
+const { LESSON, USER, RESOURCES_CATEGORY, ATTACHMENT } = require('~/consts/models')
 const {
   FIELD_CANNOT_BE_EMPTY,
   FIELD_CANNOT_BE_SHORTER,
@@ -40,7 +40,7 @@ const lessonSchema = new Schema(
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: CATEGORY,
+      ref: RESOURCES_CATEGORY,
       default: null
     },
     resourceType: {
@@ -50,6 +50,11 @@ const lessonSchema = new Schema(
         message: ENUM_CAN_BE_ONE_OF('resource type', RESOURCES_TYPES_ENUM)
       },
       default: RESOURCES_TYPES_ENUM[0]
+    },
+    attachments: {
+      type: [Schema.Types.ObjectId],
+      ref: ATTACHMENT,
+      default: []
     }
   },
   { timestamps: true, versionKey: false }

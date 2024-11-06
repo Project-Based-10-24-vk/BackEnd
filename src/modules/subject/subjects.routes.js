@@ -11,30 +11,30 @@ const {
 router.use(authMiddleware)
 router.param('id', idValidation)
 
-// @desc    Get all subjects
+// @desc    Get all subjects with params
 // @route 	GET /subjects
 // @access  Private (Authenticated users)
-router.get('/', asyncWrapper(subjectController.subjectsFind))
+router.get('/', asyncWrapper(subjectController.findMany))
 
 // @desc    Get subject by id
 // @route 	GET /subjects/:id
 // @access  Private (Authenticated users)
-router.get('/:id', asyncWrapper(subjectController.subjectFindById))
+router.get('/:id', asyncWrapper(subjectController.findOneById))
 
 router.use(restrictTo(ADMIN))
 // @desc    Create subject
 // @route 	POST /subjects
 // @access  Private (ADMIN)
-router.post('/', asyncWrapper(subjectController.subjectCreate))
+router.post('/', asyncWrapper(subjectController.create))
 
 // @desc    Update subject
-// @route 	PUT /subjects
+// @route 	PATCH /subjects
 // @access  Private (ADMIN)
-router.put('/:id', asyncWrapper(subjectController.subjectUpdate))
+router.patch('/:id', asyncWrapper(subjectController.update))
 
 // @desc    Delete subject
 // @route 	DELETE /subjects
 // @access  Private (ADMIN)
-router.delete('/:id', asyncWrapper(subjectController.subjectDelete))
+router.delete('/:id', asyncWrapper(subjectController.remove))
 
 module.exports = router

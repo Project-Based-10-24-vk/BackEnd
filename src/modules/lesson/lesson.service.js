@@ -9,9 +9,20 @@ const lessonService = {
     })
   },
 
-  findMany: async (match) => {
+  findMany: async (match, sort, skip, limit) => {
     const count = await Lesson.countDocuments(match).exec()
-    const items = await Lesson.find(match).lean().exec()
+
+    const items = await Lesson.find(match)
+      .collation({ locale: 'en', strength: 1 })
+      .populate([
+        { path: 'category', select: 'name' },
+        { path: 'attachments', select: ['name', 'size', 'url'] }
+      ])
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .lean()
+      .exec()
 
     return { count, items }
   },
