@@ -1,12 +1,10 @@
 const getMatchOptions = require('~/utils/getMatchOptions')
 const getSortOptions = require('~/utils/getSortOptions')
 const getRegex = require('~/utils/getRegex')
-const qs = require('qs')
 const subjectService = require('./subject.service')
 
 const findMany = async (req, res) => {
-  const parsedQuery = qs.parse(req.query)
-  const { name = '', category = '', sort, skip = 0, limit = 100 } = parsedQuery
+  const { name = '', category = '', sort, skip = 0, limit = 100 } = req.query
 
   const match = getMatchOptions({ name: getRegex(name), category })
   const sortOptions = getSortOptions(sort)
@@ -19,11 +17,6 @@ const findOneById = async (req, res) => {
   const { id } = req.params
 
   const response = await subjectService.findOneById(id)
-
-  // if (!response) {
-  //   return res.status(404).json({ message: 'Subject not found' })
-  // }
-
   res.status(200).json(response)
 }
 
