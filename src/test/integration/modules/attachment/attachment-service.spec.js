@@ -3,6 +3,17 @@ const { MongoMemoryServer } = require('mongodb-memory-server')
 const Attachment = require('~/modules/attachment/attachment.model')
 const attachmentService = require('~/modules/attachment/attachment.service')
 
+jest.mock('~/modules/attachment/supabase.client', () => ({
+  supabase: {
+    storage: {
+      from: jest.fn().mockReturnValue({
+        upload: jest.fn().mockResolvedValue({ data: {}, error: null }),
+        remove: jest.fn().mockResolvedValue({ error: null })
+      })
+    }
+  }
+}))
+
 let mongoServer
 
 beforeAll(async () => {
@@ -21,30 +32,36 @@ describe('Attachment Service', () => {
     await Attachment.deleteMany({})
   })
 
-  it('should create multiple attachments from an array', async () => {
+  it('should create a single attachment', async () => {
     const authorId = new mongoose.Types.ObjectId()
-    const data = [
-      { name: 'attachment1', size: 123, url: 'http://example.com/file1', author: authorId },
-      { name: 'attachment2', size: 456, url: 'http://example.com/file2', author: authorId }
-    ]
+    const data = {
+      name: 'attachment1',
+      size: 123,
+      url: 'http://example.com/file1',
+      extension: 'jpg',
+      author: authorId
+    }
 
-    const attachments = await attachmentService.create(authorId, data)
+    const attachment = await attachmentService.create(authorId, data)
 
-    expect(Array.isArray(attachments)).toBe(true)
-    expect(attachments.length).toBe(2)
-    attachments.forEach((attachment, index) => {
-      expect(attachment).toHaveProperty('_id')
-      expect(attachment.name).toBe(data[index].name)
-      expect(attachment.size).toBe(data[index].size)
-      expect(attachment.url).toBe(data[index].url)
-      expect(attachment.author).toEqual(data[index].author)
-    })
+    expect(attachment).toHaveProperty('_id')
+    expect(attachment.name).toBe(data.name)
+    expect(attachment.size).toBe(data.size)
+    expect(attachment.url).toBe(data.url)
+    expect(attachment.extension).toBe(data.extension)
+    expect(attachment.author).toEqual(data.author)
   })
 
   describe('findMany', () => {
     it('should find all attachments', async () => {
       const authorId = new mongoose.Types.ObjectId()
-      const data = { name: 'test attachment', size: 123, url: 'http://example.com/test', author: authorId }
+      const data = {
+        name: 'test attachment',
+        size: 123,
+        url: 'http://example.com/test',
+        extension: 'jpg',
+        author: authorId
+      }
       await attachmentService.create(data.author, data)
 
       const attachments = await attachmentService.findMany({})
@@ -57,7 +74,13 @@ describe('Attachment Service', () => {
   describe('findById', () => {
     it('should find an attachment by id', async () => {
       const authorId = new mongoose.Types.ObjectId()
-      const data = { name: 'test attachment', size: 123, url: 'http://example.com/test', author: authorId }
+      const data = {
+        name: 'test attachment',
+        size: 123,
+        url: 'http://example.com/test',
+        extension: 'jpg',
+        author: authorId
+      }
       const attachment = await attachmentService.create(data.author, data)
 
       const foundAttachment = await attachmentService.findById(attachment._id)
@@ -70,7 +93,13 @@ describe('Attachment Service', () => {
   describe('update', () => {
     it('should update an attachment', async () => {
       const authorId = new mongoose.Types.ObjectId()
-      const data = { name: 'test attachment', size: 123, url: 'http://example.com/test', author: authorId }
+      const data = {
+        name: 'test attachment',
+        size: 123,
+        url: 'http://example.com/test',
+        extension: 'jpg',
+        author: authorId
+      }
       const attachment = await attachmentService.create(data.author, data)
       const updatedData = { name: 'updated attachment' }
 
@@ -83,7 +112,13 @@ describe('Attachment Service', () => {
   describe('delete', () => {
     it('should delete an attachment', async () => {
       const authorId = new mongoose.Types.ObjectId()
-      const data = { name: 'test attachment', size: 123, url: 'http://example.com/test', author: authorId }
+      const data = {
+        name: 'test attachment',
+        size: 123,
+        url: 'http://example.com/test',
+        extension: 'jpg',
+        author: authorId
+      }
       const attachment = await attachmentService.create(data.author, data)
 
       await attachmentService.delete(attachment._id)

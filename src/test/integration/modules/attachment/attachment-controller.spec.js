@@ -54,23 +54,77 @@ describe('Attachment Controller', () => {
   })
 
   describe('POST /attachments', () => {
-    it('should create a new attachment', async () => {
+    it('should create new attachments when files are uploaded', async () => {
       const req = {
         user: { id: 'authorId' },
-        body: { title: 'New Attachment', authorId: 'authorId' }
+        files: [
+          { originalname: 'file1.jpg', size: 1000 },
+          { originalname: 'file2.jpg', size: 1500 }
+        ]
       }
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn()
       }
 
-      const createdAttachment = { id: 1, title: 'New Attachment', authorId: 'authorId' }
-      attachmentService.create.mockResolvedValue(createdAttachment)
+      const mockUploadedFiles = [
+        { url: 'http://example.com/file1.jpg', extension: 'jpg' },
+        { url: 'http://example.com/file2.jpg', extension: 'jpg' }
+      ]
+
+      const mockNewAttachments = [
+        { name: 'file1.jpg', size: 1000, url: 'http://example.com/file1.jpg', extension: 'jpg' },
+        { name: 'file2.jpg', size: 1500, url: 'http://example.com/file2.jpg', extension: 'jpg' }
+      ]
+
+      attachmentService.uploadToStorage = jest
+        .fn()
+        .mockResolvedValueOnce(mockUploadedFiles[0])
+        .mockResolvedValueOnce(mockUploadedFiles[1])
+
+      attachmentService.create = jest
+        .fn()
+        .mockResolvedValueOnce(mockNewAttachments[0])
+        .mockResolvedValueOnce(mockNewAttachments[1])
 
       await attachmentController.create(req, res)
 
       expect(res.status).toHaveBeenCalledWith(201)
-      expect(res.json).toHaveBeenCalledWith(createdAttachment)
+      expect(res.json).toHaveBeenCalledWith(mockNewAttachments)
+    })
+
+    it('should return 400 if no files are uploaded', async () => {
+      const req = {
+        user: { id: 'authorId' },
+        files: []
+      }
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn()
+      }
+
+      await attachmentController.create(req, res)
+
+      expect(res.status).toHaveBeenCalledWith(400)
+      expect(res.json).toHaveBeenCalledWith({ error: 'No files uploaded.' })
+    })
+
+    it('should return 500 if there is an error during file upload or creation', async () => {
+      const req = {
+        user: { id: 'authorId' },
+        files: [{ originalname: 'file1.jpg', size: 1000 }]
+      }
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn()
+      }
+
+      attachmentService.uploadToStorage = jest.fn().mockRejectedValue(new Error('File upload failed'))
+
+      await attachmentController.create(req, res)
+
+      expect(res.status).toHaveBeenCalledWith(500)
+      expect(res.json).toHaveBeenCalledWith({ error: 'File upload failed' })
     })
   })
 

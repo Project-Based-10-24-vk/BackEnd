@@ -10,7 +10,7 @@ const regex = {
   PASSWORD_PATTERN: /^(?=.*\d)(?=.*[a-zа-яєії])\S+$/i,
   NAME_PATTERN: /^[a-zа-яєії]+$/i,
   COLOR_PATTERN: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i,
-  URL_PATTERN: /^https?:\/\/(?:www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,6})(\/[^\s]*)?$/
+  URL_PATTERN: /^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}(\/[^\s]*)?$/
 }
 
 const enums = {
@@ -24,7 +24,8 @@ const enums = {
   QUESTION_TYPE_ENUM: ['multipleChoice', 'openAnswer', 'oneAnswer'],
   QUIZ_VIEW_ENUM: ['Stepper', 'Scroll'],
   RESOURCES_TYPES_ENUM: ['lessons', 'attachments', 'questions', 'quizzes'],
-  OFFER_STATUS_ENUM: ['active', 'draft', 'closed']
+  OFFER_STATUS_ENUM: ['active', 'draft', 'closed'],
+  FILES_EXTENTIONS_ENUM: ['jpeg', 'jpg', 'png', 'pdf', 'mp4', 'avi', 'mkv', 'webm', 'doc', 'docx', 'xls', 'xlsx']
 }
 
 module.exports = {

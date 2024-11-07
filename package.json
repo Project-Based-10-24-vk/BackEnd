@@ -24,6 +24,7 @@
     "supertest": "^6.2.4"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.46.1",
     "axios": "^1.7.7",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
@@ -44,6 +45,7 @@
     "query-string": "^9.1.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.0.2",
     "winston": "^3.8.0",
     "winston-mongodb": "^5.0.7",
     "yaml": "^2.6.0"
