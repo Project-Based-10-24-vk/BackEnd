@@ -1,9 +1,10 @@
 const Attachment = require('./attachment.model')
 const { supabase, supabaseUrl } = require('./supabase.client')
+const { v4: uuidv4 } = require('uuid')
 
 const attachmentService = {
   uploadToStorage: async (attachment) => {
-    const uniqueId = Date.now().toString(36)
+    const uniqueId = uuidv4()
     const extension = attachment.originalname.split('.').pop()
     const baseName = attachment.originalname.replace(/\.[^/.]+$/, '')
 
