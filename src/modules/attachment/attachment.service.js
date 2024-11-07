@@ -1,28 +1,7 @@
 const Attachment = require('./attachment.model')
-const { supabase, supabaseUrl } = require('./supabase.client')
-const { v4: uuidv4 } = require('uuid')
+const supabaseService = require('../../services/supabase')
 
 const attachmentService = {
-  uploadToStorage: async (attachment) => {
-    const uniqueId = uuidv4()
-    const extension = attachment.originalname.split('.').pop()
-    const baseName = attachment.originalname.replace(/\.[^/.]+$/, '')
-
-    const sanitizedFileName = `${baseName.replace(/\s+/g, '_').replace(/[^\w\-.]/g, '')}_${uniqueId}.${extension}`
-
-    const { error } = await supabase.storage.from('attachments').upload(sanitizedFileName, attachment.buffer, {
-      contentType: attachment.mimetype
-    })
-
-    if (error) {
-      throw new Error(error.message)
-    }
-
-    const url = `${supabaseUrl}/storage/v1/object/public/attachments/${sanitizedFileName}`
-
-    return { url, extension }
-  },
-
   create: async (author, fileData) => {
     const newAttachment = {
       name: fileData.name,
@@ -60,12 +39,7 @@ const attachmentService = {
       throw new Error('Attachment not found')
     }
 
-    const filePath = attachment.url.split('/attachments/')[1]
-    const { error } = await supabase.storage.from('attachments').remove([filePath])
-
-    if (error) {
-      throw new Error(`Failed to delete file from storage: ${error.message}`)
-    }
+    await supabaseService.removeFromStorage(attachment.url)
 
     return await Attachment.findByIdAndDelete(attachmentId)
   }

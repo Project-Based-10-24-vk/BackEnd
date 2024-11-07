@@ -25,7 +25,10 @@ const enums = {
   QUIZ_VIEW_ENUM: ['Stepper', 'Scroll'],
   RESOURCES_TYPES_ENUM: ['lessons', 'attachments', 'questions', 'quizzes'],
   OFFER_STATUS_ENUM: ['active', 'draft', 'closed'],
-  FILES_EXTENTIONS_ENUM: ['jpeg', 'jpg', 'png', 'pdf', 'mp4', 'avi', 'mkv', 'webm', 'doc', 'docx', 'xls', 'xlsx']
+  FILES_EXTENTIONS_ENUM: ['jpeg', 'jpg', 'png', 'pdf', 'mp4', 'avi', 'mkv', 'webm', 'doc', 'docx', 'xls', 'xlsx'],
+  IMAGE_EXTENTIONS_ENUM: ['jpeg', 'jpg', 'png'],
+  VIDEO_EXTENTIONS_ENUM: ['mp4', 'avi', 'mkv', 'webm'],
+  DOCUMENT_EXTENTIONS_ENUM: ['pdf', 'doc', 'docx', 'xls', 'xlsx']
 }
 
 module.exports = {

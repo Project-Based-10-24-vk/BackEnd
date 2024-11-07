@@ -3,6 +3,7 @@ const getRegex = require('~/utils/getRegex')
 const {
   roles: { ADMIN }
 } = require('~/consts/auth')
+const supabaseService = require('../../services/supabase')
 const attachmentService = require('./attachment.service')
 
 const create = async (req, res) => {
@@ -15,7 +16,7 @@ const create = async (req, res) => {
   try {
     const uploadedFiles = await Promise.all(
       attachments.map(async (attachment) => {
-        const { url, extension } = await attachmentService.uploadToStorage(attachment)
+        const { url, extension } = await supabaseService.uploadAttachment(req.user.id, attachment)
         return {
           name: attachment.originalname,
           size: attachment.size,
