@@ -1,24 +1,37 @@
 const Attachment = require('./attachment.model')
+const { supabase, supabaseUrl } = require('./supabase.client')
+const { v4: uuidv4 } = require('uuid')
 
 const attachmentService = {
-  create: async (author, data) => {
-    if (Array.isArray(data)) {
-      const array = await Promise.all(
-        data.map(async (attachment) => ({
-          name: attachment.name,
-          size: attachment.size,
-          author: author,
-          url: attachment.url
-        }))
-      )
-      return await Attachment.create(array)
+  uploadToStorage: async (attachment) => {
+    const uniqueId = uuidv4()
+    const extension = attachment.originalname.split('.').pop()
+    const baseName = attachment.originalname.replace(/\.[^/.]+$/, '')
+
+    const sanitizedFileName = `${baseName.replace(/\s+/g, '_').replace(/[^\w\-.]/g, '')}_${uniqueId}.${extension}`
+
+    const { error } = await supabase.storage.from('attachments').upload(sanitizedFileName, attachment.buffer, {
+      contentType: attachment.mimetype
+    })
+
+    if (error) {
+      throw new Error(error.message)
     }
+
+    const url = `${supabaseUrl}/storage/v1/object/public/attachments/${sanitizedFileName}`
+
+    return { url, extension }
+  },
+
+  create: async (author, fileData) => {
     const newAttachment = {
-      name: data.name,
-      size: data.size,
+      name: fileData.name,
+      size: fileData.size,
       author: author,
-      url: data.url
+      url: fileData.url,
+      extension: fileData.extension
     }
+
     return await Attachment.create(newAttachment)
   },
 
@@ -40,8 +53,21 @@ const attachmentService = {
     }).exec()
   },
 
-  delete: async (id) => {
-    return await Attachment.findByIdAndDelete(id).exec()
+  delete: async (attachmentId) => {
+    const attachment = await attachmentService.findById(attachmentId)
+
+    if (!attachment) {
+      throw new Error('Attachment not found')
+    }
+
+    const filePath = attachment.url.split('/attachments/')[1]
+    const { error } = await supabase.storage.from('attachments').remove([filePath])
+
+    if (error) {
+      throw new Error(`Failed to delete file from storage: ${error.message}`)
+    }
+
+    return await Attachment.findByIdAndDelete(attachmentId)
   }
 }
 

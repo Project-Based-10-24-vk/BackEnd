@@ -21,6 +21,7 @@ const attachmentSchema = new Schema(
       ref: 'User',
       required: [true, FIELD_CANNOT_BE_EMPTY('author')]
     },
+
     url: {
       type: String,
       required: [true, FIELD_CANNOT_BE_EMPTY('url')],
@@ -30,6 +31,11 @@ const attachmentSchema = new Schema(
         },
         message: 'Invalid URL format'
       }
+    },
+    extension: {
+      type: String,
+      required: [true, FIELD_CANNOT_BE_EMPTY('extension')],
+      trim: true
     }
   },
   { timestamps: true, versionKey: false }
