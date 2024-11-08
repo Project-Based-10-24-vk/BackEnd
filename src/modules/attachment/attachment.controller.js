@@ -38,12 +38,14 @@ const create = async (req, res) => {
 }
 
 const findMany = async (req, res) => {
-  const { name = '', authorId } = req.query
-  const matchOptions = { name: getRegex(name) }
+  const { id: author } = req.user
+  const { name = '' } = req.query
 
-  if (authorId) {
-    matchOptions.author = authorId
-  }
+  const matchOptions = { author, name: getRegex(name) }
+
+  // if (authorId) {
+  //   matchOptions.author = authorId
+  // }
 
   const response = await attachmentService.findMany(getMatchOptions(matchOptions))
   res.status(200).json(response)
