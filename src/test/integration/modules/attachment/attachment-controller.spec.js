@@ -1,8 +1,21 @@
 const request = require('supertest')
 const express = require('express')
 const bodyParser = require('body-parser')
+const { createClient } = require('@supabase/supabase-js')
+jest.mock('@supabase/supabase-js')
+const mockSupabaseClient = {
+  storage: {
+    from: jest.fn().mockReturnValue({
+      upload: jest.fn().mockResolvedValue({ data: {}, error: null }),
+      list: jest.fn().mockResolvedValue({ data: [], error: null }),
+      remove: jest.fn().mockResolvedValue({ error: null })
+    })
+  }
+}
+createClient.mockReturnValue(mockSupabaseClient)
 const attachmentController = require('~/modules/attachment/attachment.controller')
 const attachmentService = require('~/modules/attachment/attachment.service')
+const supabaseService = require('~/services/supabase')
 
 jest.mock('~/modules/attachment/attachment.service', () => ({
   findMany: jest.fn(),
@@ -119,7 +132,7 @@ describe('Attachment Controller', () => {
         json: jest.fn()
       }
 
-      attachmentService.uploadToStorage = jest.fn().mockRejectedValue(new Error('File upload failed'))
+      supabaseService.uploadAttachment = jest.fn().mockRejectedValue(new Error('File upload failed'))
 
       await attachmentController.create(req, res)
 

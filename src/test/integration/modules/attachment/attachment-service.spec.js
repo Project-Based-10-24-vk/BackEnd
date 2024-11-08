@@ -1,18 +1,19 @@
 const mongoose = require('mongoose')
 const { MongoMemoryServer } = require('mongodb-memory-server')
+const { createClient } = require('@supabase/supabase-js')
+jest.mock('@supabase/supabase-js')
+const mockSupabaseClient = {
+  storage: {
+    from: jest.fn().mockReturnValue({
+      upload: jest.fn().mockResolvedValue({ data: {}, error: null }),
+      list: jest.fn().mockResolvedValue({ data: [], error: null }),
+      remove: jest.fn().mockResolvedValue({ error: null })
+    })
+  }
+}
+createClient.mockReturnValue(mockSupabaseClient)
 const Attachment = require('~/modules/attachment/attachment.model')
 const attachmentService = require('~/modules/attachment/attachment.service')
-
-jest.mock('~/modules/attachment/supabase.client', () => ({
-  supabase: {
-    storage: {
-      from: jest.fn().mockReturnValue({
-        upload: jest.fn().mockResolvedValue({ data: {}, error: null }),
-        remove: jest.fn().mockResolvedValue({ error: null })
-      })
-    }
-  }
-}))
 
 let mongoServer
 
