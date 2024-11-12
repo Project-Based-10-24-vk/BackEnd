@@ -16,6 +16,13 @@ const subjectService = {
     return { count, items }
   },
 
+  findManyNames: async (match, sort, skip, limit) => {
+    const count = await Subject.countDocuments(match)
+    const items = await Subject.find(match).select('name').sort(sort).skip(skip).limit(limit).lean().exec()
+
+    return { count, items }
+  },
+
   findOneById: async (id) => {
     return await Subject.findById(id).lean().exec()
   },
