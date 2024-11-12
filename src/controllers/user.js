@@ -1,3 +1,4 @@
+const supabaseService = require('~/services/supabase')
 const userService = require('~/services/user')
 const { createForbiddenError } = require('~/utils/errorsHelper')
 const createAggregateOptions = require('~/utils/users/createAggregateOptions')
@@ -26,8 +27,13 @@ const updateUser = async (req, res) => {
 
   if (id !== req.user.id) throw createForbiddenError()
 
-  await userService.updateUser(id, role, updateData)
+  if (req.file) {
+    const photo = req.file
+    const { url } = await supabaseService.uploadAvatar(id, photo)
+    updateData.photo = url
+  }
 
+  await userService.updateUser(id, role, updateData)
   res.status(204).end()
 }
 
