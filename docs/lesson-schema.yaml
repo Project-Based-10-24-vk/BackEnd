@@ -1,5 +1,5 @@
 definitions:
-  create:
+  createLesson:
     type: object
     properties:
       title:
@@ -8,3 +8,13 @@ definitions:
         type: string
       content:
         type: string
+      category?:
+        type: string
+      resourceType?:
+        type: string
+        enum:
+          - lesson
+      attachments?:
+        type: array
+        items:
+          type: string
