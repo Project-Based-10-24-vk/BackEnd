@@ -13,6 +13,16 @@ const findMany = async (req, res) => {
   res.status(200).json(response)
 }
 
+const findManyNames = async (req, res) => {
+  const { name = '', category = '', sort, skip = 0, limit = 100 } = req.query
+
+  const match = getMatchOptions({ name: getRegex(name), category })
+  const sortOptions = getSortOptions(sort)
+
+  const response = await subjectService.findManyNames(match, sortOptions, skip, limit)
+  res.status(200).json(response)
+}
+
 const findOneById = async (req, res) => {
   const { id } = req.params
 
@@ -44,6 +54,7 @@ const remove = async (req, res) => {
 
 module.exports = {
   findMany,
+  findManyNames,
   findOneById,
   create,
   update,
