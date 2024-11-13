@@ -1,22 +1,47 @@
 definitions:
-  findAllByQuery:
+  findManyResponse:
     type: object
     properties:
-      name:
-        type: string
-      appearance:
-        type: object
-        properties:
-          icon:
-            type: string
-          color:
-            type: string
-      createdAt:
-        type: string
-        format: date-time
-      updatedAt:
-        type: string
-        format: date-time
+      count:
+        type: integer
+      items:
+        type: array
+        items:
+          type: object
+          properties:
+            _id:
+              type: string
+            name:
+              type: string
+            appearance:
+              type: object
+              properties:
+                icon:
+                  type: string
+                color:
+                  type: string
+            totalOffers:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+  findManyNamesResponse:
+    type: object
+    properties:
+      count:
+        type: integer
+      items:
+        type: array
+        items:
+          type: object
+          properties:
+            _id:
+              type: string
+            name:
+              type: string
   findOneByIdResponse:
     type: object
     properties:
@@ -31,6 +56,8 @@ definitions:
             type: string
           color:
             type: string
+      totalOffers:
+        type: string
       createdAt:
         type: string
         format: date-time
@@ -58,3 +85,11 @@ definitions:
             type: string
           color:
             type: string
+      totalOffers:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time

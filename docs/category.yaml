@@ -32,36 +32,44 @@ paths:
               example:
                 _id: 67113a5f2ace5dcff0fa65b6
                 name: category 1
+                totalOffers: '0'
                 appearance:
                   icon: mocked-path-to-icon
                   color: '#66C42C'
                 createdAt: 2024-10-17T16:25:03.678Z
                 updatedAt: 2024-10-17T16:25:03.678Z
-        400:
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/Error'
-              example:
-                status: 400
-                code: 'BAD_REQUEST'
-                message: 'The request could not be processed due to invalid or missing parameters.'
     get:
       security:
         - cookieAuth: []
-        - basicAuth: []
       tags:
         - Category
-      summary: Get all categories or search by name
-      description: Get all categories or search by name
+      summary: Get all categories with parameters'
+      description: Get all categories with parameters
       parameters:
         - in: query
           name: name
           required: false
           schema:
             type: string
-          description: Name of the category to search
+          description: Category name
+        - in: query
+          name: asc
+          required: false
+          schema:
+            type: string
+          description: Sort field
+        - in: query
+          name: 0
+          required: false
+          schema:
+            type: integer
+          description: Skip records
+        - in: query
+          name: 10
+          required: false
+          schema:
+            type: integer
+          description: Limit records
       produces:
         - application/json
       responses:
@@ -70,34 +78,81 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/definitions/findAllByQuery'
+                type: Object
+                properties:
+                  count:
+                    type: integer
+                  items:
+                    type: array
+                    $ref: '#/definitions/findAllResponse'
               example:
-                - _id: 67113a5f2ace5dcff0fa65b6
-                  name: category 1
-                  appearance:
-                    icon: mocked-path-to-icon
-                    color: '#66C42C'
-                  createdAt: 2024-10-17T16:25:03.678Z
-                  updatedAt: 2024-10-17T16:25:03.678Z
-                - _id: 67113a5f2ace5dcff0fa65b7
-                  name: category 2
-                  appearance:
-                    icon: mocked-path-to-icon
-                    color: '#66C42C'
-                  createdAt: 2024-10-17T16:25:03.678Z
-                  updatedAt: 2024-10-17T16:25:03.678Z
-        400:
-          description: Bad Request
+                count: 1
+                items:
+                  - _id: 67113a5f2ace5dcff0fa65b6
+                    name: category 1
+                    appearance:
+                      icon: mocked-path-to-icon
+                      color: '#66C42C'
+                    totalOffers: 0
+                    createdAt: 2024-10-17T16:25:03.678Z
+                    updatedAt: 2024-10-17T16:25:03.678Z
+                  - _id: 67113a5f2ace5dcff0fa65b7
+                    name: category 2
+                    appearance:
+                      icon: mocked-path-to-icon
+                      color: '#66C42C'
+                    totalOffers: 0
+                    createdAt: 2024-10-17T16:25:03.678Z
+                    updatedAt: 2024-10-17T16:25:03.678Z
+  /categories/names:
+    get:
+      security:
+        - cookieAuth: []
+      tags:
+        - Category
+      summary: Get all categories names with parameters
+      description: Get all categories names with parameters
+      parameters:
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+          description: Category name
+        - in: query
+          name: asc
+          required: false
+          schema:
+            type: string
+          description: Sort field
+        - in: query
+          name: 0
+          required: false
+          schema:
+            type: integer
+          description: Skip records
+        - in: query
+          name: 100
+          required: false
+          schema:
+            type: integer
+          description: Limit records
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/Error'
+                $ref: '#/definitions/findManyNamesResponse'
               example:
-                status: 400
-                code: 'BAD_REQUEST'
-                message: 'The request could not be processed due to invalid or missing parameters.'
+                count: 1
+                items:
+                  - _id: 67113a5f2ace5dcff0fa65b6
+                    name: category 1
+                  - _id: 67113a5f2ace5dcff0fa65b7
+                    name: category 2
   /categories/{id}:
     get:
       security:
@@ -125,18 +180,9 @@ paths:
               example:
                 _id: 67113a5f2ace5dcff0fa65b6
                 name: category 1
+                totalOffers: '0'
                 appearance:
                   icon: mocked-path-to-icon
                   color: '#66C42C'
                 createdAt: 2024-10-17T16:25:03.678Z
                 updatedAt: 2024-10-17T16:25:03.678Z
-        400:
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/Error'
-              example:
-                status: 400
-                code: 'BAD_REQUEST'
-                message: 'The request could not be processed due to invalid or missing parameters.'
