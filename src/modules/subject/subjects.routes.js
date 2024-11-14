@@ -16,6 +16,11 @@ router.param('id', idValidation)
 // @access  Private (Authenticated users)
 router.get('/', asyncWrapper(subjectController.findMany))
 
+// @desc    Get all categories names
+// @route 	GET /subjects/names
+// @access  Private (Authenticated users)
+router.get('/names', asyncWrapper(subjectController.findManyNames))
+
 // @desc    Get subject by id
 // @route 	GET /subjects/:id
 // @access  Private (Authenticated users)

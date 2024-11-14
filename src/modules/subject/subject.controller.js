@@ -1,12 +1,10 @@
 const getMatchOptions = require('~/utils/getMatchOptions')
 const getSortOptions = require('~/utils/getSortOptions')
 const getRegex = require('~/utils/getRegex')
-const qs = require('qs')
 const subjectService = require('./subject.service')
 
 const findMany = async (req, res) => {
-  const parsedQuery = qs.parse(req.query)
-  const { name = '', category = '', sort, skip = 0, limit = 100 } = parsedQuery
+  const { name = '', category = '', sort, skip = 0, limit = 100 } = req.query
 
   const match = getMatchOptions({ name: getRegex(name), category })
   const sortOptions = getSortOptions(sort)
@@ -15,15 +13,20 @@ const findMany = async (req, res) => {
   res.status(200).json(response)
 }
 
+const findManyNames = async (req, res) => {
+  const { name = '', category = '', sort, skip = 0, limit = 100 } = req.query
+
+  const match = getMatchOptions({ name: getRegex(name), category })
+  const sortOptions = getSortOptions(sort)
+
+  const response = await subjectService.findManyNames(match, sortOptions, skip, limit)
+  res.status(200).json(response)
+}
+
 const findOneById = async (req, res) => {
   const { id } = req.params
 
   const response = await subjectService.findOneById(id)
-
-  // if (!response) {
-  //   return res.status(404).json({ message: 'Subject not found' })
-  // }
-
   res.status(200).json(response)
 }
 
@@ -51,6 +54,7 @@ const remove = async (req, res) => {
 
 module.exports = {
   findMany,
+  findManyNames,
   findOneById,
   create,
   update,

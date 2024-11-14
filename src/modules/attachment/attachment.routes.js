@@ -5,7 +5,7 @@ const asyncWrapper = require('~/middlewares/asyncWrapper')
 const { authMiddleware } = require('~/middlewares/auth')
 const attachmentController = require('./attachment.controller')
 const { attachmentValidation } = require('./attachment.schemas')
-const upload = require('~/middlewares/multer')
+const { upload } = require('~/middlewares/multer')
 
 router.use(authMiddleware)
 router.param('id', idValidation)
@@ -14,7 +14,7 @@ router.get('/', asyncWrapper(attachmentController.findMany))
 
 router.get('/:id', asyncWrapper(attachmentController.findById))
 
-router.post('/', upload.array('files'), asyncWrapper(attachmentController.create))
+router.post('/', upload().array('files'), asyncWrapper(attachmentController.create))
 
 router.patch('/:id', validationMiddleware(attachmentValidation.UPDATE), asyncWrapper(attachmentController.update))
 

@@ -74,6 +74,7 @@ const authService = {
       throw createError(400, BAD_REFRESH_TOKEN)
     }
 
+
     const { _id, lastLoginAs, isFirstLogin, firstName, lastName, photo } = await getUserById(tokenData.id)
     
     //In future add another data
