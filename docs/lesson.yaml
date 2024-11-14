@@ -29,7 +29,7 @@ paths:
           content:
             application/json:
               schema:
-                # $ref: '#/definitions/createResponse'
+                $ref: '#/definitions/lessonResponse'
               example:
                 _id: '67113a5f2ace5dcff0fa65b6'
                 title: 'Lesson 1'
@@ -81,9 +81,9 @@ paths:
           content:
             application/json:
               schema:
-                # type: array
-                # items:
-                #   $ref: '#/definitions/findAll'
+                type: array
+                items:
+                  $ref: '#/definitions/lessonResponseMany'
               example:
                 count: 1
                 items:
@@ -107,7 +107,6 @@ paths:
                     attachments: []
                     createdAt: '2024-10-17T16:25:03.678Z'
                     updatedAt: '2024-10-17T16:25:03.678Z'
-
   /lessons/names:
     get:
       tags:
@@ -119,39 +118,39 @@ paths:
           name: name
           value: 'Lesson 1'
           required: false
+          description: Lesson name
           schema:
             type: string
-          description: Lesson name
         - in: query
           name: sort
           value: { orderBy: 'createdAt', order: 'asc' }
           required: false
+          description: Sort field
           schema:
             type: object
-          description: Sort field
         - in: query
           name: skip
           value: 0
           required: false
+          description: Skip records
           schema:
             type: integer
-          description: Skip records
         - in: query
           name: limit
           value: 100
           required: false
+          description: Limit records
           schema:
             type: integer
-          description: Limit records
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                # type: array
-                # items:
-                #   $ref: '#/definitions/findAll'
+                type: array
+                items:
+                  $ref: '#/definitions/lessonResponseMany'
               example:
                 count: 1
                 items:
@@ -178,7 +177,7 @@ paths:
           content:
             application/json:
               schema:
-                # $ref: '#/definitions/findById'
+                $ref: '#/definitions/lessonResponse'
               example:
                 _id: '67113a5f2ace5dcff0fa65b6'
                 title: 'Lesson 1'
@@ -210,7 +209,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/definitions/createLesson'
+              $ref: '#/definitions/lessonCreate'
         example:
           title: 'Lesson 1'
           description: 'This is lesson 1'
@@ -224,7 +223,7 @@ paths:
           content:
             application/json:
               schema:
-                # $ref: '#/definitions/createResponse'
+                $ref: '#/definitions/createLessonResponse'
               example:
                 _id: '67113a5f2ace5dcff0fa65b6'
                 title: 'Lesson 1'
