@@ -14,10 +14,7 @@ const lessonService = {
 
     const items = await Lesson.find(match)
       .collation({ locale: 'en', strength: 1 })
-      .populate([
-        { path: 'category', select: 'name' },
-        { path: 'attachments', select: ['name', 'size', 'url'] }
-      ])
+      .populate([{ path: 'category', select: 'name' }, { path: 'attachments' }])
       .sort(sort)
       .skip(skip)
       .limit(limit)
@@ -28,7 +25,10 @@ const lessonService = {
   },
 
   findOneById: async (id) => {
-    return await Lesson.findById(id).lean().exec()
+    return await Lesson.findById(id)
+      .populate([{ path: 'category', select: 'name' }, { path: 'attachments' }])
+      .lean()
+      .exec()
   },
 
   update: async (id, author, data) => {
