@@ -1,5 +1,5 @@
 definitions:
-  create:
+  lessonCreate:
     type: object
     properties:
       title:
@@ -8,3 +8,66 @@ definitions:
         type: string
       content:
         type: string
+      category?:
+        type: string
+      resourceType?:
+        type: string
+        enum:
+          - lesson
+      attachments?:
+        type: array
+        items:
+          type: string
+  lessonResponse:
+    type: object
+    properties:
+      _id:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+      content:
+        type: string
+      author:
+        type: string
+      category:
+        type: string | null
+      resourceType:
+        type: string
+        enum:
+          - lessons
+          - attachments
+          - questions
+          - quizzes
+      attachments:
+        type: array
+        items:
+          type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+  lessonNamesResponseMany:
+    type: object
+    properties:
+      count:
+        type: integer
+      items:
+        type: array
+        items:
+          _id:
+            type: string
+          title:
+            type: string
+  lessonResponseMany:
+    type: object
+    properties:
+      count:
+        type: integer
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/lessonResponse'

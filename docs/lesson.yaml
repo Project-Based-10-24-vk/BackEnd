@@ -1,38 +1,5 @@
 paths:
   /lessons:
-    get:
-      tags:
-        - Lesson
-      summary: Get all lessons
-      description: Get all lessons
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                # type: array
-                # items:
-                #   $ref: '#/definitions/findAll'
-              example:
-                - _id: '67113a5f2ace5dcff0fa65b6'
-                  title: 'Lesson 1'
-                  description: 'This is lesson 1'
-                  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
-                  author: '67113a5f2ace5dcff0fa65b6'
-                  category: '67113a5f2ace5dcff0fa65b6'
-                  resourceType: 'lessons'
-                  createdAt: '2024-10-17T16:25:03.678Z'
-                  updatedAt: '2024-10-17T16:25:03.678Z'
-                - _id: '67113a5f2ace5dcff0fa65b6'
-                  title: 'Lesson 1'
-                  description: 'This is lesson 1'
-                  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
-                  author: '67113a5f2ace5dcff0fa65b6'
-                  category: '67113a5f2ace5dcff0fa65b6'
-                  resourceType: 'lessons'
-                  createdAt: '2024-10-17T16:25:03.678Z'
-                  updatedAt: '2024-10-17T16:25:03.678Z'
     post:
       security:
         - cookieAuth: []
@@ -48,28 +15,149 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/definitions/create'
+              $ref: '#/definitions/createLesson'
         example:
           title: 'Lesson 1'
           description: 'This is lesson 1'
           content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+          category: null
+          resourceType: 'lessons'
+          attachments: []
       responses:
         201:
           description: Created
           content:
             application/json:
               schema:
-                # $ref: '#/definitions/createResponse'
+                $ref: '#/definitions/lessonResponse'
               example:
                 _id: '67113a5f2ace5dcff0fa65b6'
                 title: 'Lesson 1'
                 description: 'This is lesson 1'
                 content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
                 author: '67113a5f2ace5dcff0fa65b6'
-                category: '67113a5f2ace5dcff0fa65b6'
+                category: null
                 resourceType: 'lessons'
+                attachments: []
                 createdAt: '2024-10-17T16:25:03.678Z'
                 updatedAt: '2024-10-17T16:25:03.678Z'
+    get:
+      tags:
+        - Lesson
+      summary: Get all lessons with parameters
+      description: Get all lessons with
+      parameters:
+        - in: query
+          name: name
+          value: 'Lesson 1'
+          required: false
+          schema:
+            type: string
+          description: Lesson name
+        - in: query
+          name: sort
+          value: { orderBy: 'createdAt', order: 'asc' }
+          required: false
+          schema:
+            type: object
+          description: Sort field
+        - in: query
+          name: skip
+          value: 0
+          required: false
+          schema:
+            type: integer
+          description: Skip records
+        - in: query
+          name: limit
+          value: 100
+          required: false
+          schema:
+            type: integer
+          description: Limit records
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/definitions/lessonResponseMany'
+              example:
+                count: 1
+                items:
+                  - _id: '67113a5f2ace5dcff0fa65b6'
+                    title: 'Lesson 1'
+                    description: 'This is lesson 1'
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+                    author: '67113a5f2ace5dcff0fa65b6'
+                    category: '67113a5f2ace5dcff0fa65b6'
+                    resourceType: 'lessons'
+                    attachments: []
+                    createdAt: '2024-10-17T16:25:03.678Z'
+                    updatedAt: '2024-10-17T16:25:03.678Z'
+                  - _id: '67113a5f2ace5dcff0fa65b6'
+                    title: 'Lesson 1'
+                    description: 'This is lesson 1'
+                    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+                    author: '67113a5f2ace5dcff0fa65b6'
+                    category: null
+                    resourceType: 'lessons'
+                    attachments: []
+                    createdAt: '2024-10-17T16:25:03.678Z'
+                    updatedAt: '2024-10-17T16:25:03.678Z'
+  /lessons/names:
+    get:
+      tags:
+        - Lesson
+      summary: Get all lesson names
+      description: Get all lesson names
+      parameters:
+        - in: query
+          name: name
+          value: 'Lesson 1'
+          required: false
+          description: Lesson name
+          schema:
+            type: string
+        - in: query
+          name: sort
+          value: { orderBy: 'createdAt', order: 'asc' }
+          required: false
+          description: Sort field
+          schema:
+            type: object
+        - in: query
+          name: skip
+          value: 0
+          required: false
+          description: Skip records
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          value: 100
+          required: false
+          description: Limit records
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/definitions/lessonResponseMany'
+              example:
+                count: 1
+                items:
+                  - _id: '67113a5f2ace5dcff0fa65b6'
+                    title: 'Lesson 1'
+                  - _id: '67113a5f2ace5dcff0fa65b6'
+                    title: 'Lesson 1'
   /lessons/{id}:
     get:
       tags:
@@ -89,7 +177,7 @@ paths:
           content:
             application/json:
               schema:
-                # $ref: '#/definitions/findById'
+                $ref: '#/definitions/lessonResponse'
               example:
                 _id: '67113a5f2ace5dcff0fa65b6'
                 title: 'Lesson 1'
@@ -98,6 +186,7 @@ paths:
                 author: '67113a5f2ace5dcff0fa65b6'
                 category: '67113a5f2ace5dcff0fa65b6'
                 resourceType: 'lessons'
+                attachments: []
                 createdAt: '2024-10-17T16:25:03.678Z'
                 updatedAt: '2024-10-17T16:25:03.678Z'
     patch:
@@ -120,18 +209,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/definitions/create'
+              $ref: '#/definitions/lessonCreate'
         example:
           title: 'Lesson 1'
           description: 'This is lesson 1'
           content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eu ipsum tellus. Nullam nec dui molestie, imperdiet libero non, ullamcorper odio. Sed quis turpis ac nibh vulputate mattis ut ullamcorper tellus. Nam ac magna leo. Aliquam molestie gravida sollicitudin. Sed in iaculis nisi, et mollis lacus. Suspendisse potenti. In semper, purus.'
+          category: '67113a5f2ace5dcff0fa65b6'
+          resourceType: 'lessons'
+          attachments: []
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                # $ref: '#/definitions/createResponse'
+                $ref: '#/definitions/createLessonResponse'
               example:
                 _id: '67113a5f2ace5dcff0fa65b6'
                 title: 'Lesson 1'
@@ -140,6 +232,7 @@ paths:
                 author: '67113a5f2ace5dcff0fa65b6'
                 category: '67113a5f2ace5dcff0fa65b6'
                 resourceType: 'lessons'
+                attachments: []
                 createdAt: '2024-10-17T16:25:03.678Z'
                 updatedAt: '2024-10-17T16:25:03.678Z'
     delete:
